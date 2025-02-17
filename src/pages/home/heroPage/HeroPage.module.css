@@ -1,0 +1,70 @@
+.HeroPage {
+    display: flex;
+    height: 83.5vh;
+    flex-direction: column;
+    background-color: black;
+    background-image: url('../../../asset/backgroundImage.png');
+    background-size: cover;
+    background-position: center;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.heroText{
+    color: white;
+    font-size: 3em;
+    text-align: center;
+    padding-top: 30vh;
+}
+.HeroText {
+    font-size: 2em;
+    text-align: center;
+    color: white;
+
+}
+
+.button {
+    padding: 0.75rem 1.5rem;
+    background-color: #a47a47;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.button:hover {
+    background-color: #b58b50;
+    transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+    .button {
+        padding: 0.6rem 1.5rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .button {
+        padding: 0.5rem 1.2rem;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .heroText {
+        font-size: 2em;
+        padding-top: 15vh;
+    }
+}
+
+@media (max-width: 480px) {
+    .heroText {
+        font-size: 1.5em;
+        padding-top: 10vh;
+    }
+}
