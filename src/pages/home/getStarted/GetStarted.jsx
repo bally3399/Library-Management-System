@@ -65,8 +65,8 @@ const GetStarted = () => {
             const response = await axios.post("https://api.fortunaelibrary-api.com/api/Auth/register", payload, {
                 headers: { "Content-Type": "application/json" },
             });
-
-            if (response.data.successful) {
+            console.log(response);
+            if (response.data === "User registered successfully") {
                 toast.success(`Welcome ${form.username}, you have signed up successfully!`);
                 setTimeout(() => navigate("/login"), 3000);
             } else {
