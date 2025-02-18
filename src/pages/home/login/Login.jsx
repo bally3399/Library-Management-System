@@ -3,7 +3,7 @@ import { HiArrowLeft } from "react-icons/hi";
 import { Button, TextField } from "@mui/material";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom"; // Using useNavigate hook from react-router-dom
+import { useNavigate } from "react-router-dom";
 import styles from "./Login.module.css";
 
 const Login = () => {
@@ -30,7 +30,8 @@ const Login = () => {
                 }
             );
 
-            if (response.data.successful) {
+            console.log(response);
+            if (response.status === 200) {
                 toast.success(`Welcome ${form.username}, you have logged in successfully!`, {
                     position: "top-right",
                     autoClose: 3000,

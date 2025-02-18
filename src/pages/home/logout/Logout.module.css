@@ -1,0 +1,30 @@
+.logoutContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: white;
+}
+
+.logoutCard {
+    background-color: lightgrey;
+    width: 100%;
+    max-width: 400px;
+    padding: 32px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+}
+
+.logoutTitle {
+    font-size: 20px;
+    font-weight: 600;
+    color: #a47a47;
+    margin-bottom: 24px;
+}
+
+.logoutButton {
+    background-color: #a47a47 !important;
+    color: black !important;
+    margin-top: 16px;
+}

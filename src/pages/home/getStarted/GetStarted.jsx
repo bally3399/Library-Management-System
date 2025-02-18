@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { TextField, Checkbox, FormControlLabel, Button } from "@mui/material";
+import {TextField, Checkbox, FormControlLabel, Button, MenuItem, FormControl, InputLabel, Select} from "@mui/material";
 import { HiArrowLeft } from "react-icons/hi";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
@@ -19,7 +19,7 @@ const GetStarted = () => {
         dateOfBirth: "",
         profileSummary: "",
         agree: false,
-        role: typeof window !== "undefined" ? localStorage.getItem("role") : null,
+        role: ""
     });
 
     const navigate = useNavigate();
@@ -154,6 +154,28 @@ const GetStarted = () => {
 
                     }}
                     />
+                    <FormControl fullWidth className={styles.formField}
+                          sx={{
+                              "& label.Mui-focused": { color: "#a47a47" },
+                              "& .MuiOutlinedInput-root": {
+                                  "& fieldset": { borderColor: "black" },
+                                  "&:hover fieldset": { borderColor: "#a47a47" },
+                                  "&.Mui-focused fieldset": { borderColor: "#a47a47" },
+                              },
+                              marginBottom: "16px",
+                          }}
+                    >
+                        <InputLabel>Role</InputLabel>
+                        <Select
+                            name="role"
+                            value={form.role}
+                            onChange={(e) => setForm((prev) => ({ ...prev, role: e.target.value }))}
+                        >
+                            <MenuItem value="Admin">Admin</MenuItem>
+                            <MenuItem value="Member">Member</MenuItem>
+                        </Select>
+                    </FormControl>
+
                     <TextField label="Profile Summary" name="profileSummary" value={form.profileSummary}
                                onChange={handleChange} fullWidth multiline rows={3} className={styles.formField}
                                sx={{
