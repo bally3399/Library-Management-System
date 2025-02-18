@@ -3,6 +3,12 @@ import GetStarted from "../pages/home/getStarted/GetStarted";
 import Login from "../pages/home/login/Login";
 import Logout from "../pages/home/logout/Logout";
 import Dashboard from "../pages/home/dashboard/Dashboard";
+import UpdateProfile from "../pages/UpdateProfile/page";
+import BorrowBookPage from "../pages/borrowBook/BorrowBook";
+import ReturnBookPage from "../pages/ReturnBook/page";
+import AddBookPage from "../pages/home/addBook/AddBook";
+import ViewHistory from "../pages/ViewHistory/page";
+
 
 export const ROUTE =[
     {
@@ -34,6 +40,30 @@ export const ROUTE =[
         element:<Dashboard/>,
     },
 
+    {
+        path: "/addBook",
+        element:<AddBookPage/>,
+    },
+
+    {
+         path: "/borrowBook",
+         element:<BorrowBookPage/>,
+    },
+
+    {
+         path: "/returnBook",
+         element:<ReturnBookPage/>,
+    },
+
+    {
+       path: "/updateProfile",
+         element:<UpdateProfile/>,
+    },
+
+    {
+        path: "/viewHistory",
+        element:<ViewHistory/>,
+    }
 
 
 
