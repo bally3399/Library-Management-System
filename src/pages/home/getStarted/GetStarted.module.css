@@ -57,3 +57,19 @@
     background-color: #a47a47 !important;
     color: black !important;
 }
+
+.loginRedirect {
+    text-align: center;
+    margin-top: 16px;
+}
+
+.loginLink {
+
+    color: #a47a47;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.loginLink:hover {
+    text-decoration: underline;
+}

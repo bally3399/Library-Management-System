@@ -65,8 +65,8 @@ const GetStarted = () => {
             const response = await axios.post("https://api.fortunaelibrary-api.com/api/Auth/register", payload, {
                 headers: { "Content-Type": "application/json" },
             });
-
-            if (response.data.successful) {
+            console.log(response);
+            if (response.data === "User registered successfully") {
                 toast.success(`Welcome ${form.username}, you have signed up successfully!`);
                 setTimeout(() => navigate("/login"), 3000);
             } else {
@@ -87,73 +87,81 @@ const GetStarted = () => {
             <div className={styles.regCard}>
                 <h2 className={styles.regTitle}>Sign up</h2>
                 <form onSubmit={handleSubmit}>
-                    <TextField label="Username" name="username" value={form.username} onChange={handleChange} fullWidth className={styles.formField} sx={{
-                        "& label.Mui-focused": { color: "#a47a47" },
+                    <TextField label="Username" name="username" value={form.username} onChange={handleChange} fullWidth
+                               className={styles.formField} sx={{
+                        "& label.Mui-focused": {color: "#a47a47"},
                         "& .MuiOutlinedInput-root": {
-                            "& fieldset": { borderColor: "black" },
-                            "&:hover fieldset": { borderColor: "#a47a47" },
-                            "&.Mui-focused fieldset": { borderColor: "#a47a47" },
+                            "& fieldset": {borderColor: "black"},
+                            "&:hover fieldset": {borderColor: "#a47a47"},
+                            "&.Mui-focused fieldset": {borderColor: "#a47a47"},
                         },
                         marginBottom: "16px",
                     }}
                     />
-                    <TextField label="Full Name" name="name" value={form.name} onChange={handleChange} fullWidth className={styles.formField} sx={{
-                        "& label.Mui-focused": { color: "#a47a47" },
+                    <TextField label="Full Name" name="name" value={form.name} onChange={handleChange} fullWidth
+                               className={styles.formField} sx={{
+                        "& label.Mui-focused": {color: "#a47a47"},
                         "& .MuiOutlinedInput-root": {
-                            "& fieldset": { borderColor: "black" },
-                            "&:hover fieldset": { borderColor: "#a47a47" },
-                            "&.Mui-focused fieldset": { borderColor: "#a47a47" },
+                            "& fieldset": {borderColor: "black"},
+                            "&:hover fieldset": {borderColor: "#a47a47"},
+                            "&.Mui-focused fieldset": {borderColor: "#a47a47"},
                         },
                         marginBottom: "16px",
                     }}/>
-                    <TextField label="Email" name="email" type="email" value={form.email} onChange={handleChange} fullWidth className={styles.formField} sx={{
-                        "& label.Mui-focused": { color: "#a47a47" },
+                    <TextField label="Email" name="email" type="email" value={form.email} onChange={handleChange}
+                               fullWidth className={styles.formField} sx={{
+                        "& label.Mui-focused": {color: "#a47a47"},
                         "& .MuiOutlinedInput-root": {
-                            "& fieldset": { borderColor: "black" },
-                            "&:hover fieldset": { borderColor: "#a47a47" },
-                            "&.Mui-focused fieldset": { borderColor: "#a47a47" },
+                            "& fieldset": {borderColor: "black"},
+                            "&:hover fieldset": {borderColor: "#a47a47"},
+                            "&.Mui-focused fieldset": {borderColor: "#a47a47"},
                         },
                         marginBottom: "16px",
                     }}/>
-                    <TextField label="Password" name="password" type="password" value={form.password} onChange={handleChange} fullWidth className={styles.formField} sx={{
-                        "& label.Mui-focused": { color: "#a47a47" },
+                    <TextField label="Password" name="password" type="password" value={form.password}
+                               onChange={handleChange} fullWidth className={styles.formField} sx={{
+                        "& label.Mui-focused": {color: "#a47a47"},
                         "& .MuiOutlinedInput-root": {
-                            "& fieldset": { borderColor: "black" },
-                            "&:hover fieldset": { borderColor: "#a47a47" },
-                            "&.Mui-focused fieldset": { borderColor: "#a47a47" },
-                   },
-                        marginBottom: "16px",
-
-                    }}
-                    />
-                    <TextField label="Confirm Password" name="confirmPassword" type="password" value={form.confirmPassword} onChange={handleChange} fullWidth className={styles.formField} sx={{
-                        "& label.Mui-focused": { color: "#a47a47" },
-                        "& .MuiOutlinedInput-root": {
-                            "& fieldset": { borderColor: "black" },
-                            "&:hover fieldset": { borderColor: "#a47a47" },
-                            "&.Mui-focused fieldset": { borderColor: "#a47a47" },
-                        },
-                        marginBottom: "16px",
-                    }}
-                    />
-                    <TextField label="" name="dateOfBirth" type="date" value={form.dateOfBirth} onChange={handleChange} fullWidth className={styles.formField} sx={{
-                        "& label.Mui-focused": { color: "#a47a47" },
-                        "& .MuiOutlinedInput-root": {
-                            "& fieldset": { borderColor: "black" },
-                            "&:hover fieldset": { borderColor: "#a47a47" },
-                            "&.Mui-focused fieldset": { borderColor: "#a47a47" }
+                            "& fieldset": {borderColor: "black"},
+                            "&:hover fieldset": {borderColor: "#a47a47"},
+                            "&.Mui-focused fieldset": {borderColor: "#a47a47"},
                         },
                         marginBottom: "16px",
 
                     }}
                     />
-                    <TextField label="Profile Summary" name="profileSummary" value={form.profileSummary} onChange={handleChange} fullWidth multiline rows={3} className={styles.formField}
+                    <TextField label="Confirm Password" name="confirmPassword" type="password"
+                               value={form.confirmPassword} onChange={handleChange} fullWidth
+                               className={styles.formField} sx={{
+                        "& label.Mui-focused": {color: "#a47a47"},
+                        "& .MuiOutlinedInput-root": {
+                            "& fieldset": {borderColor: "black"},
+                            "&:hover fieldset": {borderColor: "#a47a47"},
+                            "&.Mui-focused fieldset": {borderColor: "#a47a47"},
+                        },
+                        marginBottom: "16px",
+                    }}
+                    />
+                    <TextField label="" name="dateOfBirth" type="date" value={form.dateOfBirth} onChange={handleChange}
+                               fullWidth className={styles.formField} sx={{
+                        "& label.Mui-focused": {color: "#a47a47"},
+                        "& .MuiOutlinedInput-root": {
+                            "& fieldset": {borderColor: "black"},
+                            "&:hover fieldset": {borderColor: "#a47a47"},
+                            "&.Mui-focused fieldset": {borderColor: "#a47a47"}
+                        },
+                        marginBottom: "16px",
+
+                    }}
+                    />
+                    <TextField label="Profile Summary" name="profileSummary" value={form.profileSummary}
+                               onChange={handleChange} fullWidth multiline rows={3} className={styles.formField}
                                sx={{
-                                   "& label.Mui-focused": { color: "#a47a47" },
+                                   "& label.Mui-focused": {color: "#a47a47"},
                                    "& .MuiOutlinedInput-root": {
-                                       "& fieldset": { borderColor: "black" },
-                                       "&:hover fieldset": { borderColor: "#a47a47" },
-                                       "&.Mui-focused fieldset": { borderColor: "#a47a47" },
+                                       "& fieldset": {borderColor: "black"},
+                                       "&:hover fieldset": {borderColor: "#a47a47"},
+                                       "&.Mui-focused fieldset": {borderColor: "#a47a47"},
 
                                    },
                                    marginBottom: "16px",
@@ -168,7 +176,7 @@ const GetStarted = () => {
                                 onChange={handleChange}
                                 sx={{
                                     color: "#a47a47",
-                                    "&.Mui-checked": { color: "#a47a47" }
+                                    "&.Mui-checked": {color: "#a47a47"}
                                 }}
                             />
                         }
@@ -176,11 +184,21 @@ const GetStarted = () => {
                     />
                     {errors.agree && <p className={styles.errorText}>{errors.agree}</p>}
 
-                    <Button type="submit" variant="contained" fullWidth disabled={isLoading} className={styles.submitButton}>
+                    <Button type="submit" variant="contained" fullWidth disabled={isLoading}
+                            className={styles.submitButton}>
                         {isLoading ? "Signing Up..." : "Sign Up"}
                     </Button>
+                    <div className={styles.loginRedirect}>
+                        <p>
+                            Already signed in?{" "}
+                            <span onClick={() => navigate("/login")} className={styles.loginLink}>
+                                Login
+                            </span>
+                        </p>
+                    </div>
+
                 </form>
-                <ToastContainer position="top-right" autoClose={3000} />
+                <ToastContainer position="top-right" autoClose={3000}/>
             </div>
         </div>
     );
