@@ -8,7 +8,7 @@ const Navbar = () => {
 
     return (
         <nav className={styles.navbar}>
-            <h1 className={styles.brandName}>Fortunae IT Library Management System</h1>
+            <h1 className={styles.brandName}>Fortunaé IT Library Management System</h1>
 
             <div className={styles.hamburger} onClick={() => setIsOpen(!isOpen)}>
                 {isOpen ? <FiX /> : <FiMenu />}

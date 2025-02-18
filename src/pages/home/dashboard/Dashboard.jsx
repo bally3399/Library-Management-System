@@ -1,5 +1,6 @@
 import DashboardNavbar from "../../../components/dashboardNavbar/DashboardNavbar";
 import styles from "./Dashboard.module.css";
+import Footer from "../../../components/footer";
 
 const Dashboard = () => {
     return (
@@ -12,6 +13,7 @@ const Dashboard = () => {
                 <button className={styles.actionButton}>Update Profile</button>
                 <button className={styles.actionButton}>View Borrowing History</button>
             </div>
+            <Footer/>
         </main>
     );
 };
