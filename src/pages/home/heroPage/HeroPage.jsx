@@ -30,10 +30,67 @@ const books = [
         title: "Harry Potter and the Philosopher's Stone",
         author: "J.K. Rowling",
         description: "A fantasy novel about a young wizard’s journey at Hogwarts.",
-        image: " https://m.media-amazon.com/images/I/51UoqRAxwEL.jpg",
+        image: "https://m.media-amazon.com/images/I/51UoqRAxwEL.jpg",
+        rating: 5,
+    },
+    {
+        title: "The Hobbit",
+        author: "J.R.R. Tolkien",
+        description: "A classic fantasy adventure following Bilbo Baggins' journey.",
+        image: "https://m.media-amazon.com/images/I/41aQPTCmeVL.jpg",
+        rating: 5,
+    },
+    {
+        title: "The Alchemist",
+        author: "Paulo Coelho",
+        description: "A philosophical novel about following one's dreams.",
+        image: "https://m.media-amazon.com/images/I/51Z0nLAfLmL.jpg",
+        rating: 5,
+    },
+    {
+        title: "1984",
+        author: "George Orwell",
+        description: "A dystopian novel about totalitarianism and surveillance.",
+        image: "https://upload.wikimedia.org/wikipedia/en/c/c3/1984first.jpg",
+        rating: 5,
+    },
+    {
+        title: "The Catcher in the Rye",
+        author: "J.D. Salinger",
+        description: "A novel about teenage alienation and rebellion.",
+        image: "https://m.media-amazon.com/images/I/91uMz1tlJaL.jpg",
+        rating: 4,
+    },
+    {
+        title: "To Kill a Mockingbird",
+        author: "Harper Lee",
+        description: "A novel about racial injustice in the American South.",
+        image: "https://m.media-amazon.com/images/I/51grMGCKivL.jpg",
+        rating: 5,
+    },
+    {
+        title: "The Great Gatsby",
+        author: "F. Scott Fitzgerald",
+        description: "A classic novel exploring wealth and ambition in the 1920s.",
+        image: "https://m.media-amazon.com/images/I/51vv75oglyL.jpg",
+        rating: 4,
+    },
+    {
+        title: "Moby-Dick",
+        author: "Herman Melville",
+        description: "A novel about a captain's obsessive quest for revenge on a whale.",
+        image: "https://upload.wikimedia.org/wikipedia/commons/8/8b/Moby-Dick_FE_title_page.jpg",
+        rating: 4,
+    },
+    {
+        title: "Pride and Prejudice",
+        author: "Jane Austen",
+        description: "A romantic novel about manners, marriage, and societal expectations.",
+        image: "https://m.media-amazon.com/images/I/81AfHC9J7hL.jpg",
         rating: 5,
     }
 ];
+
 
 
 const HeroPage = () => {
