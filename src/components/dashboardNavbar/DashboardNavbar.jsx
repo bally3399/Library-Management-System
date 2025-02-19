@@ -9,8 +9,9 @@ const DashboardNavbar = () => {
 
     return (
         <nav className={styles.navbar}>
-            <h1 className={styles.brandName}>Fortunae IT Library Management System</h1>
+            <h1 className={styles.brandName}>Fortunaé IT Library MS</h1>
 
+            <Link to={"/https://api.fortunaelibrary-api.com/"}>
             <input
                 type="text"
                 placeholder="Search books..."
@@ -19,6 +20,7 @@ const DashboardNavbar = () => {
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
 
+            </Link>
             <div className={styles.hamburger} onClick={() => setIsOpen(!isOpen)}>
                 {isOpen ? <FiX /> : <FiMenu />}
             </div>

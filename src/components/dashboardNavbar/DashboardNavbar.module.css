@@ -59,7 +59,7 @@
     .navLinks {
         display: none;
         flex-direction: column;
-        background-color: #a47a47;
+        background-color: white;
         position: absolute;
         top: 60px;
         left: 0;
@@ -78,4 +78,5 @@
     .searchBox {
         width: 100%;
     }
+
 }
