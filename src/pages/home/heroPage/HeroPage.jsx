@@ -125,11 +125,13 @@ const HeroPage = () => {
                                     </span>
                                 ))}
                             </div>
-                            <button className={styles.viewButton}>View</button>
+                            <Link to={"/login"}>
+                                <button className={styles.viewButton}>View</button>
+                            </Link>
                         </div>
                     ))}
                 </div>
-            </div>
+                </div>
 
             <Footer/>
         </main>
