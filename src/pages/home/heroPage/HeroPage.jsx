@@ -19,13 +19,15 @@ const books = [
         image: "https://upload.wikimedia.org/wikipedia/en/6/62/BraveNewWorld_FirstEdition.jpg",
         rating: 4,
     },
+
     {
         title: "Dune",
         author: "Frank Herbert",
         description: "A sci-fi epic about politics, religion, and power on a desert planet.",
-        image: "https://upload.wikimedia.org/wikipedia/en/a/a4/Dune_First_Edition.jpg",
+        image: "https://d3525k1ryd2155.cloudfront.net/h/995/807/944807995.0.x.jpg",
         rating: 4,
     },
+
     {
         title: "Harry Potter and the Philosopher's Stone",
         author: "J.K. Rowling",
@@ -51,14 +53,15 @@ const books = [
         title: "1984",
         author: "George Orwell",
         description: "A dystopian novel about totalitarianism and surveillance.",
-        image: "https://upload.wikimedia.org/wikipedia/en/c/c3/1984first.jpg",
+        image: "https://m.media-amazon.com/images/I/71kxa1-0mfL.jpg",
         rating: 5,
     },
+
     {
         title: "The Catcher in the Rye",
         author: "J.D. Salinger",
         description: "A novel about teenage alienation and rebellion.",
-        image: "https://m.media-amazon.com/images/I/91uMz1tlJaL.jpg",
+        image: "https://m.media-amazon.com/images/I/81OthjkJBuL._AC_SY679_.jpg.jpg",
         rating: 4,
     },
     {
@@ -79,16 +82,18 @@ const books = [
         title: "Moby-Dick",
         author: "Herman Melville",
         description: "A novel about a captain's obsessive quest for revenge on a whale.",
-        image: "https://upload.wikimedia.org/wikipedia/commons/8/8b/Moby-Dick_FE_title_page.jpg",
+        image: "https://render.fineartamerica.com/images/images-profile-flow/400/images/artworkimages/mediumlarge/2/the-whale-barathieu-gabriel.jpg",
         rating: 4,
     },
+
     {
         title: "Pride and Prejudice",
         author: "Jane Austen",
         description: "A romantic novel about manners, marriage, and societal expectations.",
-        image: "https://m.media-amazon.com/images/I/81AfHC9J7hL.jpg",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNQOqNz5BNMTGXMVS82T6p6M4KekaMLnicyw&s",
         rating: 5,
-    }
+    },
+
 ];
 
 
