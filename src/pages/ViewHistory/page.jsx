@@ -6,10 +6,12 @@ const ViewHistory = ({ memberId }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    const base_url = import.meta.env.VITE_API_BASE_URL;
+
     useEffect(() => {
         const fetchHistory = async () => {
             try {
-                const response = await axios.get(`/api/members/${memberId}/history`);
+                const response = await axios.get(`${base_url}/api/Borrowing/history`);
                 setHistory(response.data);
             } catch (err) {
                 setError(err.message);

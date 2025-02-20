@@ -4,7 +4,7 @@ import Login from "../pages/home/login/Login";
 import Logout from "../pages/home/logout/Logout";
 import Dashboard from "../pages/home/dashboard/Dashboard";
 import UpdateProfile from "../pages/UpdateProfile/page";
-import BorrowBookPage from "../pages/borrowBook/BorrowBook";
+import BorrowBookPage from "../pages/BorrowBook/BorrowBook";
 import ReturnBookPage from "../pages/ReturnBook/page";
 import ViewHistory from "../pages/ViewHistory/page";
 import AddBook from "../pages/home/addBook/AddBook";
