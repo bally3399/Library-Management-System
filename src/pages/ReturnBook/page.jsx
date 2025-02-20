@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import jwt_decode from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode';
 
 const ReturnBookPage = () => {
     const [bookId, setBookId] = useState('');
@@ -16,7 +16,7 @@ const ReturnBookPage = () => {
         const token = localStorage.getItem('authToken');
         if (token) {
             try {
-                const decodedToken = jwt_decode(token);
+                const decodedToken = jwtDecode(token);
                 // Set the member ID from the token
                 setMemberId(decodedToken.memberId || decodedToken.userId || decodedToken.sub);
                 
@@ -41,7 +41,7 @@ const ReturnBookPage = () => {
         if (!memberId) return;
         
         setLoading(true);
-        const base_url = import.meta.env.VITE_API_BASE_URL || '';
+        const base_url =   'https://api.fortunaelibrary-api.com';
         
         try {
             // Using the correct borrowedBooks endpoint with userId parameter
@@ -265,8 +265,8 @@ const ReturnBookPage = () => {
                     <button 
                         style={{ background: "#a47a47"}} 
                         type="submit" 
-                        className="w-full bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-700"
-                        disabled={!borrowingId}
+                        className="w-full cursor-pointer bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-700"
+                        
                     >
                         Return Book
                     </button>
