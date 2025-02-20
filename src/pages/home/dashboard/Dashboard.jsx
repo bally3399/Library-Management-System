@@ -11,6 +11,8 @@ const Dashboard = () => {
         <main>
             <DashboardNavbar />
             <div className={styles.dashboard}>
+
+
                 <button onClick={() => navigate("/addBook")} className={styles.actionButton}>Add Book</button>
                 <button onClick={() => navigate("/BorrowBook")} className={styles.actionButton}>Borrow Book</button>
                 <button onClick={() => navigate("/ReturnBook")} className={styles.actionButton}>Return Book</button>
