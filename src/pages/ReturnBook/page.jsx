@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import jwt_decode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
 const ReturnBookPage = () => {
     const [bookId, setBookId] = useState('');
@@ -16,7 +16,7 @@ const ReturnBookPage = () => {
         const token = localStorage.getItem('authToken');
         if (token) {
             try {
-                const decodedToken = jwt_decode(token);
+                const decodedToken = jwtDecode(token);
                 // Set the member ID from the token
                 setMemberId(decodedToken.memberId || decodedToken.userId || decodedToken.sub);
                 
