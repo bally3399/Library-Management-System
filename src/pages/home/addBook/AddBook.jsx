@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import axios from "axios";
 import { TextField, Button } from "@mui/material";
 import styles from "./AddBook.module.css";
+import {jwtDecode} from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
-const API_URL = "https://api.fortunaelibrary-api.com/api/Books";
+const API_URL = "https://api.fortunaelibrary-api.com";
 
-const AddBook = ({ onAddBook }) => {
+    const AddBook = () => {
     const [bookData, setBookData] = useState({
         title: "",
         author: "",
@@ -16,6 +18,8 @@ const AddBook = ({ onAddBook }) => {
     });
 
     const [message, setMessage] = useState("");
+    const navigate = useNavigate();
+    const fileInputRef = React.createRef();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -33,13 +37,28 @@ const AddBook = ({ onAddBook }) => {
             "&:hover fieldset": { borderColor: "#a47a47" },
             "&.Mui-focused fieldset": { borderColor: "#a47a47" },
         },
-        // marginBottom: "8px",
     };
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setMessage("");
+
+        const token = localStorage.getItem("token");
+        if (!token) {
+            setMessage("Unauthorized: No token found.");
+            return;
+        }
+
+        try {
+            const decodedToken = jwtDecode(token);
+            if (decodedToken.role !== "Admin") {
+                setMessage("Unauthorized: Only admins can add books.");
+                return;
+            }
+        } catch (error) {
+            setMessage("Invalid token.");
+            return;
+        }
 
         const formData = new FormData();
         formData.append("title", bookData.title);
@@ -50,16 +69,20 @@ const AddBook = ({ onAddBook }) => {
         formData.append("image", bookData.image);
 
         try {
-            const response = await axios.post(`${API_URL}/AddBook`,
+            const response = await axios.post(
+                `${API_URL}/api/Books/AddBook`,
                 formData,
                 {
-                headers: { "Content-Type": "multipart/form-data" },
-            });
-
-            const newBook = response.data;
-
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        Authorization: `Bearer ${token}`,
+                        Accept: "*/*",
+                    },
+                }
+            );
+            console.log(response);
             setMessage("Book added successfully!");
-            onAddBook(newBook); 
+
             setBookData({
                 title: "",
                 author: "",
@@ -68,7 +91,9 @@ const AddBook = ({ onAddBook }) => {
                 isbn: "",
                 image: null,
             });
-            window.location.href="/books"
+            console.log(3);
+
+            navigate("/books");
         } catch (error) {
             setMessage("Failed to add book. Try again.");
         }
@@ -138,7 +163,7 @@ const AddBook = ({ onAddBook }) => {
                     onChange={handleFileChange}
                     required
                     className={styles.fileInput}
-
+                    ref={fileInputRef}
                 />
                 <div className={styles.submitButtonWrapper}>
                     <Button

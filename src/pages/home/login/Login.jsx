@@ -30,12 +30,13 @@ const Login = () => {
                 }
             );
 
-            console.log(response);
+            console.log(response.data.token);
             if (response.status === 200) {
                 toast.success(`Welcome ${form.username}, you have logged in successfully!`, {
                     position: "top-right",
                     autoClose: 3000,
                 });
+                localStorage.setItem("token", response.data.token);
                 navigate("/dashboard");
             } else {
                 setErrors({ username: "Invalid username or password" });
