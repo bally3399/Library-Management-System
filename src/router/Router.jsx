@@ -6,8 +6,9 @@ import Dashboard from "../pages/home/dashboard/Dashboard";
 import UpdateProfile from "../pages/UpdateProfile/page";
 import BorrowBookPage from "../pages/BorrowBook/BorrowBook";
 import ReturnBookPage from "../pages/ReturnBook/page";
-import AddBookPage from "../pages/home/addBook/AddBook";
 import ViewHistory from "../pages/ViewHistory/page";
+import AddBook from "../pages/home/addBook/AddBook";
+import BookPage from "../pages/home/books/Books";
 
 
 export const ROUTE =[
@@ -42,7 +43,7 @@ export const ROUTE =[
 
     {
         path: "/addBook",
-        element:<AddBookPage/>,
+        element:<AddBook/>,
     },
 
     {
@@ -63,8 +64,17 @@ export const ROUTE =[
     {
         path: "/viewHistory",
         element:<ViewHistory/>,
-    }
+    },
 
+    {
+        path: "/books",
+        element:<BookPage/>,
+    },
+
+    // {
+    //     path: "/books/:bookId",
+    //     element: <BookDetailsPage />
+    // }
 
 
 

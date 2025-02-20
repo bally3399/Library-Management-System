@@ -13,6 +13,7 @@
     position: absolute;
     top: 1rem;
     left: 1rem;
+    background-color: white;
 }
 
 .backButton {
@@ -20,10 +21,13 @@
     align-items: center;
     color: #a47a47;
     cursor: pointer;
+    background-color: white;
 }
 
 .backButton:hover {
     color: darkgoldenrod;
+    background-color: white;
+
 }
 
 .backIcon {
@@ -79,6 +83,22 @@
     background-color: darkgoldenrod !important;
 }
 
+.loginRedirect {
+    text-align: center;
+    margin-top: 16px;
+    color: #8c6239;
+}
+
+.loginLink {
+
+    color: #a47a47;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.loginLink:hover {
+    text-decoration: underline;
+}
 
 @media (max-width: 768px) {
     .formSection {
