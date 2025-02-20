@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Card, CardContent, Typography, CardMedia, Button } from "@mui/material";
 import styles from "./Books.module.css";
-import DashboardNavbar from "../../../components/dashboardNavbar/DashboardNavbar";
+import BooksNavbar from "../../../components/booksNavbar/BooksNavbar";
 
 const API_URL = "https://api.fortunaelibrary-api.com/api/Books";
 
@@ -14,8 +14,10 @@ const BooksPage = () => {
     useEffect(() => {
         const fetchBooks = async () => {
             try {
-                const response = await axios.get(`${API_URL}?filter=`);
+                const response = await axios.get(`${API_URL}`);
+                console.log(response?.data)
                 setBooks(response.data);
+                // setBooks(JSON.parse(localStorage.getItem("books"))??[])
             } catch (err) {
                 setError("Failed to load books.");
             } finally {
@@ -31,7 +33,7 @@ const BooksPage = () => {
 
     return (
         <div>
-            <DashboardNavbar />
+            <BooksNavbar />
             <div className={styles.booksPageContainer}>
                 <h2>All Books</h2>
                 <div className={styles.booksList}>
@@ -41,36 +43,34 @@ const BooksPage = () => {
                                 component="img"
                                 alt={book.title}
                                 height="200"
-                                image={book.image || "default_image_url"}
+                                image={book.bookImage || "default_image_url"}
                                 title={book.title}
+                                description={book.description}
+                                className={styles.bookImage}
                             />
-                            <CardContent>
-                                <Typography variant="h6">{book.title}</Typography>
-                                <Typography variant="body2" color="textSecondary">
+                            <CardContent >
+                                <Typography className={styles.bookTitle} variant="h6">{book.title}</Typography>
+                                <Typography className={styles.bookAuthor} variant="body2" color="textSecondary">
                                     {book.author}
                                 </Typography>
-                                <Typography variant="body2">{book.genre}</Typography>
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    href={`/books/${book.id}`}
-                                >
-                                    View Details
-                                </Button>
-                                <Button
-                                    variant="contained"
-                                    color="secondary"
-                                    sx={{ marginLeft: "10px" }}
-                                >
-                                    Borrow Book
-                                </Button>
+                                <Typography className={styles.bookDescription}>{book.description}</Typography>
+                                <div className={styles.submitButtonWrapper}>
+                                    <Button
+                                        type="submit"
+                                        variant="contained"
+                                        className={styles.submitButton}
+
+                                    >
+                                        Borrow Book
+                                    </Button>
+                                </div>
                             </CardContent>
                         </Card>
-                    ))}
+                        ))}
                 </div>
             </div>
         </div>
-    );
+);
 };
 
 export default BooksPage;

@@ -91,8 +91,7 @@ const API_URL = "https://api.fortunaelibrary-api.com";
                 isbn: "",
                 image: null,
             });
-            console.log(3);
-
+            localStorage.setItem("books", JSON.stringify(response.data))
             navigate("/books");
         } catch (error) {
             setMessage("Failed to add book. Try again.");
