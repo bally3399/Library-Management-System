@@ -1,0 +1,28 @@
+.booksPageContainer {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
+
+.booksList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.bookCard {
+    max-width: 300px;
+    width: 100%;
+    margin: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.bookCard img {
+    object-fit: cover;
+}
+
+button {
+    margin-top: 10px;
+}
+

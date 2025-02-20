@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState } from "react";
 import {TextField, Checkbox, FormControlLabel, Button, MenuItem, FormControl, InputLabel, Select} from "@mui/material";
 import { HiArrowLeft } from "react-icons/hi";

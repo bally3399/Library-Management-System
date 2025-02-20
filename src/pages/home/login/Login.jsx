@@ -30,12 +30,13 @@ const Login = () => {
                 }
             );
 
-            console.log(response);
+            console.log(response.data.token);
             if (response.status === 200) {
                 toast.success(`Welcome ${form.username}, you have logged in successfully!`, {
                     position: "top-right",
                     autoClose: 3000,
                 });
+                localStorage.setItem("token", response.data.token);
                 navigate("/dashboard");
             } else {
                 setErrors({ username: "Invalid username or password" });
@@ -99,9 +100,18 @@ const Login = () => {
                             }}
                         />
                         <div className={styles.submitButtonWrapper}>
-                            <Button type="submit" variant="contained" fullWidth disabled={isLoading} className={styles.submitButton}>
+                            <Button type="submit" variant="contained" fullWidth disabled={isLoading}
+                                    className={styles.submitButton}>
                                 {isLoading ? "Logging in..." : "Login"}
                             </Button>
+                            <div className={styles.loginRedirect}>
+                                <p>
+                                    Don't have an account? {" "}
+                                    <span onClick={() => navigate("/register")} className={styles.loginLink}>
+                                register
+                            </span>
+                                </p>
+                            </div>
                         </div>
                     </form>
                 </div>

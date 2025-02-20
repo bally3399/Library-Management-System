@@ -1,66 +1,183 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import axios from "axios";
+import { TextField, Button } from "@mui/material";
+import styles from "./AddBook.module.css";
+import {jwtDecode} from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
-const AddBookPage = () => {
-    const [bookTitle, setBookTitle] = useState('');
-    const [author, setAuthor] = useState('');
-    const [cart, setCart] = useState([]);
+const API_URL = "https://api.fortunaelibrary-api.com";
 
-    const handleAddBook = () => {
-        if (bookTitle && author) {
-            setCart([...cart, { title: bookTitle, author }]);
-            setBookTitle('');
-            setAuthor('');
+    const AddBook = () => {
+    const [bookData, setBookData] = useState({
+        title: "",
+        author: "",
+        genre: "",
+        description: "",
+        isbn: "",
+        image: null,
+    });
+
+    const [message, setMessage] = useState("");
+    const navigate = useNavigate();
+    const fileInputRef = React.createRef();
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setBookData({ ...bookData, [name]: value });
+    };
+
+    const handleFileChange = (e) => {
+        setBookData({ ...bookData, image: e.target.files[0] });
+    };
+
+    const inputStyles = {
+        "& label.Mui-focused": { color: "#a47a47" },
+        "& .MuiOutlinedInput-root": {
+            "& fieldset": { borderColor: "black" },
+            "&:hover fieldset": { borderColor: "#a47a47" },
+            "&.Mui-focused fieldset": { borderColor: "#a47a47" },
+        },
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setMessage("");
+
+        const token = localStorage.getItem("token");
+        if (!token) {
+            setMessage("Unauthorized: No token found.");
+            return;
+        }
+
+        try {
+            const decodedToken = jwtDecode(token);
+            if (decodedToken.role !== "Admin") {
+                setMessage("Unauthorized: Only admins can add books.");
+                return;
+            }
+        } catch (error) {
+            setMessage("Invalid token.");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("title", bookData.title);
+        formData.append("author", bookData.author);
+        formData.append("genre", bookData.genre);
+        formData.append("description", bookData.description);
+        formData.append("isbn", bookData.isbn);
+        formData.append("image", bookData.image);
+
+        try {
+            const response = await axios.post(
+                `${API_URL}/api/Books/AddBook`,
+                formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        Authorization: `Bearer ${token}`,
+                        Accept: "*/*",
+                    },
+                }
+            );
+            console.log(response);
+            setMessage("Book added successfully!");
+
+            setBookData({
+                title: "",
+                author: "",
+                genre: "",
+                description: "",
+                isbn: "",
+                image: null,
+            });
+            console.log(3);
+
+            navigate("/books");
+        } catch (error) {
+            setMessage("Failed to add book. Try again.");
         }
     };
 
     return (
-        <div className="min-h-screen bg-gray-100 p-6">
-            <h1 className="text-3xl font-bold mb-6">Add Book to Cart</h1>
-            <div className="bg-white p-6 rounded-lg shadow-md">
-                <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="bookTitle">
-                        Book Title
-                    </label>
-                    <input
-                        type="text"
-                        id="bookTitle"
-                        value={bookTitle}
-                        onChange={(e) => setBookTitle(e.target.value)}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    />
+        <div className={styles.addBookContainer}>
+            <h2>Add a New Book</h2>
+            {message && <p className={styles.message}>{message}</p>}
+            <form onSubmit={handleSubmit}>
+                <TextField
+                    label="Title"
+                    name="title"
+                    value={bookData.title}
+                    onChange={handleChange}
+                    fullWidth
+                    required
+                    margin="normal"
+                    sx={inputStyles}
+                />
+                <TextField
+                    label="Author"
+                    name="author"
+                    value={bookData.author}
+                    onChange={handleChange}
+                    fullWidth
+                    required
+                    margin="normal"
+                    sx={inputStyles}
+                />
+                <TextField
+                    label="Genre"
+                    name="genre"
+                    value={bookData.genre}
+                    onChange={handleChange}
+                    fullWidth
+                    required
+                    margin="normal"
+                    sx={inputStyles}
+                />
+                <TextField
+                    label="Description"
+                    name="description"
+                    value={bookData.description}
+                    onChange={handleChange}
+                    multiline
+                    rows={2}
+                    fullWidth
+                    required
+                    margin="normal"
+                    sx={inputStyles}
+                />
+                <TextField
+                    label="ISBN"
+                    name="isbn"
+                    value={bookData.isbn}
+                    onChange={handleChange}
+                    fullWidth
+                    required
+                    margin="normal"
+                    sx={inputStyles}
+                />
+
+                <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    required
+                    className={styles.fileInput}
+                    ref={fileInputRef}
+                />
+                <div className={styles.submitButtonWrapper}>
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        className={styles.submitButton}
+                        fullWidth
+                    >
+                        Add Book
+                    </Button>
                 </div>
-                <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="author">
-                        Author
-                    </label>
-                    <input
-                        type="text"
-                        id="author"
-                        value={author}
-                        onChange={(e) => setAuthor(e.target.value)}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    />
-                </div>
-                <button
-                  style={{ background: "#a47a47"}}
-                    onClick={handleAddBook}
-                    className="bg-yellow-500 hover:bg-blue-700 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                >
-                    Add to Cart
-                </button>
-            </div>
-            <div className="mt-6">
-                <h2 className="text-2xl font-bold mb-4">Cart</h2>
-                <ul className="list-disc pl-5">
-                    {cart.map((book, index) => (
-                        <li key={index} className="mb-2">
-                            <span className="font-semibold">{book.title}</span> by {book.author}
-                        </li>
-                    ))}
-                </ul>
-            </div>
+            </form>
         </div>
     );
 };
 
-export default AddBookPage;
+export default AddBook;
