@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FiMenu, FiSearch, FiX } from "react-icons/fi";
 import styles from "./BooksNavbar.module.css";
 import axios from "axios";
@@ -7,17 +7,26 @@ import axios from "axios";
 const DashboardNavbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
+    const [searchResults, setSearchResults] = useState([]);
+    const [showSuggestions, setShowSuggestions] = useState(false);
+    const navigate = useNavigate();
 
     const handleSearch = async () => {
         if (!searchTerm.trim()) return;
         try {
             const response = await axios.get(
-                `https://api.fortunaelibrary-api.com/api/Books/search`
+                `https://api.fortunaelibrary-api.com/api/Books/search?title=${encodeURIComponent(searchTerm)}`
             );
-            console.log("Search Results:", response.data);
+            setSearchResults(response.data);
+            setShowSuggestions(true);
         } catch (error) {
             console.error("Search failed:", error);
         }
+    };
+
+    const handleSelectBook = (bookId) => {
+        setShowSuggestions(false);
+        navigate(`/book/${bookId}`);
     };
 
     return (
@@ -31,11 +40,29 @@ const DashboardNavbar = () => {
                     className={styles.searchInput}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && handleSearch()} // Enable Enter key search
+                    onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                 />
                 <button className={styles.searchButton} onClick={handleSearch}>
                     <FiSearch />
                 </button>
+
+                {showSuggestions && (
+                    <div className={styles.suggestionsDropdown}>
+                        {searchResults.length > 0 ? (
+                            searchResults.map((book) => (
+                                <div
+                                    key={book.id}
+                                    className={styles.suggestionItem}
+                                    onClick={() => handleSelectBook(book.id)}
+                                >
+                                    {book.title}
+                                </div>
+                            ))
+                        ) : (
+                            <div className={styles.noResults}>No results found</div>
+                        )}
+                    </div>
+                )}
             </div>
 
             <div className={styles.hamburger} onClick={() => setIsOpen(!isOpen)}>
@@ -54,3 +81,5 @@ const DashboardNavbar = () => {
 };
 
 export default DashboardNavbar;
+
+
