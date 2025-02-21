@@ -1,27 +1,68 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import {jwtDecode} from 'jwt-decode';
 
-const ViewHistory = ({ memberId }) => {
+const ViewHistory = ({ memberId: propsMemberId }) => {
     const [history, setHistory] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [userId, setUserId] = useState(propsMemberId || null);
 
-    const base_url = import.meta.env.VITE_API_BASE_URL;
+    const base_url = 'https://api.fortunaelibrary-api.com';
 
     useEffect(() => {
+        // Get user ID from JWT if not provided as prop
+        if (!propsMemberId) {
+            const token = localStorage.getItem('authToken');
+            console.log(token);
+            if (token) {
+                try {
+                    const decodedToken = jwtDecode(token);
+                    setUserId(decodedToken.memberId || decodedToken.userId || decodedToken.sub);
+                } catch (err) {
+                    setError("Error decoding authentication token");
+                    setLoading(false);
+                    return;
+                }
+            } else {
+                setError("Authentication token not found");
+                setLoading(false);
+                return;
+            }
+        }
+
         const fetchHistory = async () => {
+            // Get the authentication token
+            const token = localStorage.getItem('authToken');
+            
+            if (!token) {
+                setError("Authentication token not found");
+                setLoading(false);
+                return;
+            }
+
             try {
-                const response = await axios.get(`${base_url}/api/Borrowing/history`);
+                const response = await axios.get(`${base_url}/api/Borrowing/history`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    params: userId ? { userId } : {}
+                });
+                
+                console.log(response.data);
                 setHistory(response.data);
             } catch (err) {
-                setError(err.message);
+                console.error("API Error:", err);
+                setError(err.response?.data?.message || err.message || "Failed to fetch borrowing history");
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchHistory();
-    }, [memberId]);
+        if (userId || !propsMemberId) {
+            fetchHistory();
+        }
+    }, [propsMemberId, userId, base_url]);
 
     if (loading) return <div className="text-center mt-4">Loading...</div>;
     if (error) return <div className="text-center mt-4 text-red-500">Error: {error}</div>;
@@ -34,10 +75,20 @@ const ViewHistory = ({ memberId }) => {
             ) : (
                 <ul className="space-y-4">
                     {history.map((record) => (
-                        <li key={record.id} className="p-4 border rounded-lg shadow-md">
-                            <p className="font-semibold">Book Title: <span className="font-normal">{record.bookTitle}</span></p>
-                            <p className="font-semibold">Borrowed On: <span className="font-normal">{new Date(record.borrowedOn).toLocaleDateString()}</span></p>
-                            <p className="font-semibold">Returned On: <span className="font-normal">{record.returnedOn ? new Date(record.returnedOn).toLocaleDateString() : 'Not returned yet'}</span></p>
+                        <li key={record.id || record.borrowingId} className="p-4 border rounded-lg shadow-md">
+                            <p className="font-semibold">Book Title: <span className="font-normal">{record.bookTitle || record.bookName}</span></p>
+                            <p className="font-semibold">Borrowed On: <span className="font-normal">{new Date(record.borrowedOn || record.borrowDate).toLocaleDateString()}</span></p>
+                            <p className="font-semibold">Returned On: <span className="font-normal">
+                                {record.returnedOn || record.returnDate 
+                                    ? new Date(record.returnedOn || record.returnDate).toLocaleDateString() 
+                                    : 'Not returned yet'}
+                            </span></p>
+                            {record.rating && (
+                                <p className="font-semibold">Rating: <span className="font-normal">{record.rating}/5</span></p>
+                            )}
+                            {record.comment && (
+                                <p className="font-semibold">Comment: <span className="font-normal">{record.comment}</span></p>
+                            )}
                         </li>
                     ))}
                 </ul>
