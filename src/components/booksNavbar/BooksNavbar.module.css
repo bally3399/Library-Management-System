@@ -5,7 +5,49 @@
     background-color: white;
     padding: 16px 24px;
     color: #a47a47;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    gap: 16px;
+}
+
+.searchContainer {
     position: relative;
+    display: flex;
+    align-items: center;
+    background-color: white;
+    padding: 2px;
+    border-radius: 25px;
+    border: 1px solid #a47a47;
+    width: 300px;
+}
+
+.searchInput {
+    flex-grow: 1;
+    padding: 8px 10px;
+    border: none;
+    background: white;
+    color: black;
+    outline: none;
+    font-size: 14px;
+}
+
+.searchButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: gray;
+    font-size: 16px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+}
+
+.searchButton:hover {
+    color: black;
 }
 
 .brandName {
@@ -13,12 +55,6 @@
     font-weight: bold;
 }
 
-.searchBox {
-    padding: 8px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    width: 200px;
-}
 
 .hamburger {
     display: none;
@@ -44,7 +80,7 @@
     padding: 8px 16px;
     border: none;
     cursor: pointer;
-    border-radius: 4px;
+    border-radius: 20px;
 }
 
 .logoutButton:hover {
