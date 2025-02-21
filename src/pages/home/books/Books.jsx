@@ -3,6 +3,7 @@ import axios from "axios";
 import { Card, CardContent, Typography, CardMedia, Button } from "@mui/material";
 import styles from "./Books.module.css";
 import BooksNavbar from "../../../components/booksNavbar/BooksNavbar";
+import {useNavigate} from "react-router-dom";
 
 const API_URL = "https://api.fortunaelibrary-api.com/api/Books";
 
@@ -10,6 +11,8 @@ const BooksPage = () => {
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const navigate = useNavigate();
+
 
     useEffect(() => {
         const fetchBooks = async () => {
@@ -59,6 +62,7 @@ const BooksPage = () => {
                                         type="submit"
                                         variant="contained"
                                         className={styles.submitButton}
+                                        onClick={() => navigate("/BorrowBook")}
 
                                     >
                                         Borrow Book
@@ -70,7 +74,7 @@ const BooksPage = () => {
                 </div>
             </div>
         </div>
-);
+    );
 };
 
 export default BooksPage;
