@@ -57,7 +57,7 @@ const UpdateProfile = () => {
         e.preventDefault();
         // Add logic to handle profile update
 
-        const base_url = import.meta.env.VITE_API_BASE_URL;
+        const base_url =  'https://api.fortunaelibrary-api.com';
 
         try {
             const response = await fetch(`${base_url}/api/Auth/update-profile?userId=${memberId}`, {
