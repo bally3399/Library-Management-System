@@ -17,17 +17,15 @@ const BooksPage = () => {
     useEffect(() => {
         const fetchBooks = async () => {
             try {
-                const response = await axios.get(`${API_URL} `);
-                console.log(response?.data)
+                const response = await axios.get(`${API_URL}?filter=`);                  console.log(response);
                 setBooks(response.data);
-                // setBooks(JSON.parse(localStorage.getItem("books"))??[])
             } catch (err) {
+                console.error(err);
                 setError("Failed to load books.");
             } finally {
                 setLoading(false);
             }
         };
-
         fetchBooks();
     }, []);
 

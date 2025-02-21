@@ -12,7 +12,10 @@ const DashboardNavbar = () => {
     const navigate = useNavigate();
 
     const handleSearch = async () => {
-        if (!searchTerm.trim()) return;
+        if (!searchTerm.trim()) {
+            setShowSuggestions(false);
+            return;
+        }
         try {
             const response = await axios.get(
                 `https://api.fortunaelibrary-api.com/api/Books/search?title=${encodeURIComponent(searchTerm)}`
@@ -23,6 +26,8 @@ const DashboardNavbar = () => {
             console.error("Search failed:", error);
         }
     };
+
+
 
     const handleSelectBook = (bookId) => {
         setShowSuggestions(false);
@@ -39,11 +44,17 @@ const DashboardNavbar = () => {
                     placeholder="Search books"
                     className={styles.searchInput}
                     value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onChange={(e) => {
+                        setSearchTerm(e.target.value);
+                        if (e.target.value.trim() === "") {
+                            setShowSuggestions(false);
+                        }
+                    }}
                     onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                 />
+
                 <button className={styles.searchButton} onClick={handleSearch}>
-                    <FiSearch />
+                    <FiSearch/>
                 </button>
 
                 {showSuggestions && (
@@ -66,7 +77,7 @@ const DashboardNavbar = () => {
             </div>
 
             <div className={styles.hamburger} onClick={() => setIsOpen(!isOpen)}>
-                {isOpen ? <FiX /> : <FiMenu />}
+                {isOpen ? <FiX/> : <FiMenu/>}
             </div>
 
             <div className={`${styles.navLinks} ${isOpen ? styles.showMenu : ""}`}>
