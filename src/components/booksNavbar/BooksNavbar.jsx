@@ -9,6 +9,7 @@ const DashboardNavbar = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [searchResults, setSearchResults] = useState([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
+    const [searchType, setSearchType] = useState("title"); // Default search type
     const navigate = useNavigate();
 
     const handleSearch = async () => {
@@ -16,9 +17,17 @@ const DashboardNavbar = () => {
             setShowSuggestions(false);
             return;
         }
+
         try {
+            const queryParams = new URLSearchParams({
+                title: searchType === "title" ? searchTerm : "",
+                author: searchType === "author" ? searchTerm : "",
+                genre: searchType === "genre" ? searchTerm : "",
+                isAvailable: true, // Assuming you want to filter by available books
+            });
+
             const response = await axios.get(
-                `https://api.fortunaelibrary-api.com/api/Books/search?title=${encodeURIComponent(searchTerm)}`
+                `https://api.fortunaelibrary-api.com/api/Books/search?${queryParams}`
             );
             setSearchResults(response.data);
             setShowSuggestions(true);
@@ -27,11 +36,15 @@ const DashboardNavbar = () => {
         }
     };
 
-
-
     const handleSelectBook = (bookId) => {
         setShowSuggestions(false);
         navigate(`/book/${bookId}`);
+    };
+
+    const handleSearchTypeChange = (type) => {
+        setSearchType(type);
+        setSearchTerm("");
+        setShowSuggestions(false);
     };
 
     return (
@@ -39,9 +52,18 @@ const DashboardNavbar = () => {
             <h1 className={styles.brandName}>Fortunaé IT Library MS</h1>
 
             <div className={styles.searchContainer}>
+                <select
+                    className={styles.searchTypeDropdown}
+                    value={searchType}
+                    onChange={(e) => handleSearchTypeChange(e.target.value)}
+                >
+                    <option value="title">Search by Title</option>
+                    <option value="author">Search by Author</option>
+                    <option value="genre">Search by Genre</option>
+                </select>
                 <input
                     type="text"
-                    placeholder="Search books"
+                    placeholder={`Search by ${searchType}`}
                     className={styles.searchInput}
                     value={searchTerm}
                     onChange={(e) => {
@@ -52,9 +74,8 @@ const DashboardNavbar = () => {
                     }}
                     onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                 />
-
                 <button className={styles.searchButton} onClick={handleSearch}>
-                    <FiSearch/>
+                    <FiSearch />
                 </button>
 
                 {showSuggestions && (
@@ -66,7 +87,7 @@ const DashboardNavbar = () => {
                                     className={styles.suggestionItem}
                                     onClick={() => handleSelectBook(book.id)}
                                 >
-                                    {book.title}
+                                    {book.title} by {book.author}
                                 </div>
                             ))
                         ) : (
@@ -77,7 +98,7 @@ const DashboardNavbar = () => {
             </div>
 
             <div className={styles.hamburger} onClick={() => setIsOpen(!isOpen)}>
-                {isOpen ? <FiX/> : <FiMenu/>}
+                {isOpen ? <FiX /> : <FiMenu />}
             </div>
 
             <div className={`${styles.navLinks} ${isOpen ? styles.showMenu : ""}`}>
@@ -92,5 +113,3 @@ const DashboardNavbar = () => {
 };
 
 export default DashboardNavbar;
-
-

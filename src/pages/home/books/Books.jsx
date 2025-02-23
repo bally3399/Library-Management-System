@@ -17,15 +17,17 @@ const BooksPage = () => {
     useEffect(() => {
         const fetchBooks = async () => {
             try {
-                const response = await axios.get(`${API_URL}?filter=`);                  console.log(response);
+                const response = await axios.get(`https://api.fortunaelibrary-api.com/api/Books`);
+                console.log(response?.data)
                 setBooks(response.data);
+                // setBooks(JSON.parse(localStorage.getItem("books"))??[])
             } catch (err) {
-                console.error(err);
                 setError("Failed to load books.");
             } finally {
                 setLoading(false);
             }
         };
+
         fetchBooks();
     }, []);
 

@@ -20,18 +20,37 @@
     padding: 2px;
     border-radius: 25px;
     border: 1px solid #a47a47;
-    width: 300px;
+    width: 400px;
+}
+
+
+
+.searchTypeDropdown {
+    padding: 8px;
+    border: none;
+    background: none;
+    color: #a47a47;
+    font-size: 14px;
+    margin-right: 8px;
+    cursor: pointer;
+    outline: none;
+}
+
+.searchTypeDropdown:hover {
+    color: #8c6239;
 }
 
 .searchInput {
     flex-grow: 1;
-    padding: 8px 10px;
+    padding: 2px 10px;
     border: none;
     background: white;
     color: black;
     outline: none;
     font-size: 14px;
+    margin-top: 2px;
 }
+
 
 .searchButton {
     background: none;
@@ -84,11 +103,16 @@
     font-weight: bold;
 }
 
-
 .hamburger {
     display: none;
     font-size: 24px;
     cursor: pointer;
+    color: #a47a47;
+    transition: color 0.2s ease-in-out;
+}
+
+.hamburger:hover {
+    color: #8c6239;
 }
 
 .navLinks {
@@ -102,7 +126,6 @@
     text-decoration: none;
     font-size: 16px;
 }
-
 
 .logoutButton {
     background-color: #a47a47;
@@ -158,4 +181,3 @@
         text-align: center;
     }
 }
-
