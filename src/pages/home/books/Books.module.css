@@ -20,9 +20,7 @@
 
 }
 
-
-
-button {
+.button {
     margin-top: 10px;
 }
 
@@ -68,4 +66,36 @@ button {
     font-size: 14px;
     color: #444;
     margin-top: 8px;
+}
+
+@media (max-width: 768px) {
+    .booksList {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .bookCard {
+        width: 90%;
+        max-width: 350px;
+        margin: 10px auto;
+    }
+
+    .bookImage {
+        height: auto;
+        max-height: 180px;
+    }
+
+    .bookTitle {
+        font-size: 16px;
+    }
+
+    .bookAuthor,
+    .bookDescription {
+        font-size: 12px;
+    }
+
+    .submitButton {
+        width: 100%;
+        text-align: center;
+    }
 }
