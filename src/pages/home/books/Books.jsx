@@ -3,33 +3,32 @@ import axios from "axios";
 import { Card, CardContent, Typography, CardMedia, Button } from "@mui/material";
 import styles from "./Books.module.css";
 import BooksNavbar from "../../../components/booksNavbar/BooksNavbar";
-import {useNavigate} from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
-const API_URL = "https://api.fortunaelibrary-api.com/api/Books";
+const API_URL = "http://fortunaeapi-dev.eba-7p6g3tc2.us-east-1.elasticbeanstalk.com/api/Books/getbooks";
 
 const BooksPage = () => {
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const navigate = useNavigate();
+    const location = useLocation();
 
+    const fetchBooks = async () => {
+        try {
+            const response = await axios.get(API_URL);
+            console.log("Fetched books:", response?.data);
+            setBooks(response.data);
+        } catch (err) {
+            setError("Failed to load books.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        const fetchBooks = async () => {
-            try {
-                const response = await axios.get(`https://api.fortunaelibrary-api.com/api/Books`);
-                console.log(response?.data)
-                setBooks(response.data);
-                // setBooks(JSON.parse(localStorage.getItem("books"))??[])
-            } catch (err) {
-                setError("Failed to load books.");
-            } finally {
-                setLoading(false);
-            }
-        };
-
         fetchBooks();
-    }, []);
+    }, [location]); // Re-fetch books when the location changes
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>{error}</p>;
@@ -51,26 +50,29 @@ const BooksPage = () => {
                                 description={book.description}
                                 className={styles.bookImage}
                             />
-                            <CardContent >
-                                <Typography className={styles.bookTitle} variant="h6">{book.title}</Typography>
+                            <CardContent>
+                                <Typography className={styles.bookTitle} variant="h6">
+                                    {book.title}
+                                </Typography>
                                 <Typography className={styles.bookAuthor} variant="body2" color="textSecondary">
                                     {book.author}
                                 </Typography>
-                                <Typography className={styles.bookDescription}>{book.description}</Typography>
+                                <Typography className={styles.bookDescription}>
+                                    {book.description}
+                                </Typography>
                                 <div className={styles.submitButtonWrapper}>
                                     <Button
                                         type="submit"
                                         variant="contained"
                                         className={styles.submitButton}
                                         onClick={() => navigate("/BorrowBook")}
-
                                     >
                                         Borrow Book
                                     </Button>
                                 </div>
                             </CardContent>
                         </Card>
-                        ))}
+                    ))}
                 </div>
             </div>
         </div>

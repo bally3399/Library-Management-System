@@ -10,17 +10,6 @@ const DashboardNavbar = () => {
     return (
         <nav className={styles.navbar}>
             <h1 className={styles.brandName}>Fortunaé IT Library MS</h1>
-
-            {/*<Link to={"/https://api.fortunaelibrary-api.com/"}>*/}
-            {/*<input*/}
-            {/*    type="text"*/}
-            {/*    placeholder="Search books..."*/}
-            {/*    className={styles.searchBox}*/}
-            {/*    value={searchTerm}*/}
-            {/*    onChange={(e) => setSearchTerm(e.target.value)}*/}
-            {/*/>*/}
-
-            {/*</Link>*/}
             <div className={styles.hamburger} onClick={() => setIsOpen(!isOpen)}>
                 {isOpen ? <FiX /> : <FiMenu />}
             </div>

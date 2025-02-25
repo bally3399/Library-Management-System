@@ -23,11 +23,12 @@ const DashboardNavbar = () => {
                 title: searchType === "title" ? searchTerm : "",
                 author: searchType === "author" ? searchTerm : "",
                 genre: searchType === "genre" ? searchTerm : "",
-                isAvailable: true, // Assuming you want to filter by available books
+                isAvailable: true,
+
             });
 
             const response = await axios.get(
-                `https://api.fortunaelibrary-api.com/api/Books/search?${queryParams}`
+                `http://fortunaeapi-dev.eba-7p6g3tc2.us-east-1.elasticbeanstalk.com/api/Books/search?${queryParams}`
             );
             setSearchResults(response.data);
             setShowSuggestions(true);

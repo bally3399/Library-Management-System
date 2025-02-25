@@ -5,7 +5,7 @@ import styles from "./AddBook.module.css";
 import {jwtDecode} from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 
-const API_URL = "https://api.fortunaelibrary-api.com";
+const API_URL = " http://fortunaeapi-dev.eba-7p6g3tc2.us-east-1.elasticbeanstalk.com";
 
     const AddBook = () => {
     const [bookData, setBookData] = useState({
@@ -39,65 +39,65 @@ const API_URL = "https://api.fortunaelibrary-api.com";
         },
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setMessage("");
+        const handleSubmit = async (e) => {
+            e.preventDefault();
+            setMessage("");
 
-        const token = localStorage.getItem("token");
-        if (!token) {
-            setMessage("Unauthorized: No token found.");
-            return;
-        }
-
-        try {
-            const decodedToken = jwtDecode(token);
-            if (decodedToken.role !== "Admin") {
-                setMessage("Unauthorized: Only admins can add books.");
+            const token = localStorage.getItem("token");
+            if (!token) {
+                setMessage("Unauthorized: No token found.");
                 return;
             }
-        } catch (error) {
-            setMessage("Invalid token.");
-            return;
-        }
 
-        const formData = new FormData();
-        formData.append("title", bookData.title);
-        formData.append("author", bookData.author);
-        formData.append("genre", bookData.genre);
-        formData.append("description", bookData.description);
-        formData.append("isbn", bookData.isbn);
-        formData.append("image", bookData.image);
-
-        try {
-            const response = await axios.post(
-                `${API_URL}/api/Books/AddBook`,
-                formData,
-                {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                        Authorization: `Bearer ${token}`,
-                        Accept: "*/*",
-                    },
+            try {
+                const decodedToken = jwtDecode(token);
+                if (decodedToken.role !== "Admin") {
+                    setMessage("Unauthorized: Only admins can add books.");
+                    return;
                 }
-            );
-            console.log(response);
-            setMessage("Book added successfully!");
+            } catch (error) {
+                setMessage("Invalid token.");
+                return;
+            }
 
-            setBookData({
-                title: "",
-                author: "",
-                genre: "",
-                description: "",
-                isbn: "",
-                image: null,
-            });
-            localStorage.setItem("books", JSON.stringify(response.data))
-            navigate("/books");
-        } catch (error) {
-            setMessage("Failed to add book. Try again.");
-        }
-    };
+            const formData = new FormData();
+            formData.append("title", bookData.title);
+            formData.append("author", bookData.author);
+            formData.append("genre", bookData.genre);
+            formData.append("description", bookData.description);
+            formData.append("isbn", bookData.isbn);
+            formData.append("image", bookData.image);
 
+            try {
+                const response = await axios.post(
+                    `${API_URL}/api/Books/AddBook`,
+                    formData,
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                            Authorization: `Bearer ${token}`,
+                            Accept: "*/*",
+                        },
+                    }
+                );
+                console.log("Book added:", response.data);
+                setMessage("Book added successfully!");
+
+                setBookData({
+                    title: "",
+                    author: "",
+                    genre: "",
+                    description: "",
+                    isbn: "",
+                    image: null,
+                });
+
+                // Navigate to the books page
+                navigate("/books");
+            } catch (error) {
+                setMessage("Failed to add book. Try again.");
+            }
+        };
     return (
         <div className={styles.addBookContainer}>
             <h2>Add a New Book</h2>
