@@ -110,7 +110,6 @@ const BooksPage = () => {
         setLoading(false);
     }
 };
-  
 
 
     return (
