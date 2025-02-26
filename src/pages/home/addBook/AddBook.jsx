@@ -92,7 +92,6 @@ const API_URL = " http://fortunaeapi-dev.eba-7p6g3tc2.us-east-1.elasticbeanstalk
                     image: null,
                 });
 
-                // Navigate to the books page
                 navigate("/books");
             } catch (error) {
                 setMessage("Failed to add book. Try again.");

@@ -5,15 +5,18 @@ import {jwtDecode} from 'jwt-decode';
 const UpdateProfile = () => {
     const [formData, setFormData] = useState({
         name: '',
-        email: '',
         dateOfBirth: '',
         profileSummary: '',
-        password: '',
-        confirmPassword: ''
     });
 
     const [memberId, setMemberId] = useState(null);
 
+    const token = localStorage.getItem('token');
+    const decodedToken = jwtDecode(token);
+    console.log(token);
+    console.log(token.UserId);
+    console.log(decodedToken);
+   console.log(decodedToken.UserId);
     useEffect(() => {
         // Add logic to fetch member details
        const token = localStorage.getItem('token');
@@ -23,7 +26,7 @@ const UpdateProfile = () => {
             const decodedToken = jwtDecode(token);
 
             // Assuming your JWT contains userId/memberId claim
-            setMemberId(decodedToken.memberId || decodedToken.userId || decodedToken.id)
+            setMemberId(decodedToken.UserId)
         
           // Optionally pre-fill email if it's in the token
           if (decodedToken.email) {
@@ -38,29 +41,52 @@ const UpdateProfile = () => {
       }
     }, []);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value
-        });
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        
+        if (name === "dateOfBirth") {
+            const date = new Date(value);
+            const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+            
+            setFormData({
+                ...formData,
+                [dateOfBirth]: formattedDate
+            });
+        } else {
+            setFormData({
+                ...formData,
+                [name]: value
+            });
+        }
     };
+    
+
+    // const handleChange = (e) => {
+    //     const { name, value } = e.target;
+    //     setFormData({
+    //         ...formData,
+    //         [name]: value,
+           
+
+    //     });
+    // };
 
    // const getmemberIdbyEmail = token.jwtVerify(email);
   //  const memberId = getmemberIdbyEmail;
 
     const [name, setName] = useState(formData.name);
-    const [dateOfBirth, setDateOfBirth] = useState(formData.dateOfBirth);
+    const [dateOfBirth, setDateOfBirth] = useState('2000-02-13');
     const [profileSummary, setProfileSummary] = useState(formData.profileSummary);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         // Add logic to handle profile update
 
-        const base_url =  'https://api.fortunaelibrary-api.com';
+        const base_url =  'http://api.fortunaelibrary-api.com';
+        console.log(dateOfBirth);
 
         try {
-            const response = await fetch(`${base_url}/api/Auth/update-profile?userId=${memberId}`, {
+            const response = await fetch(`${base_url}/api/Auth/update-profile?userId=${decodedToken.UserId}`, {
                 method: "PUT",  // or "PUT" depending on API implementation
                 headers: {
                     "Content-Type": "application/json",
@@ -88,6 +114,8 @@ const UpdateProfile = () => {
         }
 
         console.log('Profile updated:', formData);
+        <p className='text-green-500 text-5xl text-center items-center absolute top-10 left-90'>Profile Updated Successfully</p>
+
     };
 
     return (
@@ -106,31 +134,20 @@ const UpdateProfile = () => {
                         className="w-full px-3 py-2 border border-gray-300 rounded-md"
                     />
                 </div>
+               
                 <div className="mb-4">
-                    <label htmlFor="email" className="block text-gray-700">Email:</label>
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                    />
-                </div>
+    <label htmlFor="dateOfBirth" className="block text-gray-700">Date Of Birth:</label>
+    <input
+        type="date"
+        id="dateOfBirth"
+        name="dateOfBirth"
+        value={dateOfBirth}
+        onChange={handleChange}
+        required
+        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+    />
+</div>
 
-                <div className="mb-4">
-                    <label htmlFor="dateOfBirth" className="block text-gray-700">DateOfBirth:</label>
-                    <input
-                        type="date"
-                        id="dateOfBirth"
-                        name="dateOfBirth"
-                        value={formData.dateOfBirth}
-                        onChange={handleChange}
-                        required
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                    />
-                </div>
 
                 <div className="mb-4">
                     <label htmlFor="profileSummary" className="block text-gray-700">profileSummary:</label>
@@ -148,30 +165,6 @@ const UpdateProfile = () => {
 
 
 
-                <div className="mb-4">
-                    <label htmlFor="password" className="block text-gray-700">Password:</label>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        required
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                    />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="confirmPassword" className="block text-gray-700">Confirm Password:</label>
-                    <input
-                        type="password"
-                        id="confirmPassword"
-                        name="confirmPassword"
-                        value={formData.confirmPassword}
-                        onChange={handleChange}
-                        required
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                    />
-                </div>
                 <button style={{ background: "#a47a47"}} type="submit" className="w-full bg-yellow-950 text-white py-2 rounded-md hover:bg-yellow-600">Update Profile</button>
             </form>
         </div>

@@ -9,6 +9,7 @@ import ViewHistory from "../pages/ViewHistory/page";
 import AddBook from "../pages/home/addBook/AddBook";
 import BookPage from "../pages/home/books/Books";
 import BorrowBookPage from "../pages/home/borrowBook/BorrowBook";
+import BorrowedBooks from "../pages/BorrowedBooks/page";
 import BookDetails from "../pages/home/booksDetails/BookDetails";
 
 
@@ -74,6 +75,12 @@ export const ROUTE =[
     },
 
     {
+        path: "/BorrowedBooks",
+        element:<BorrowedBooks />,
+    },
+  
+    {
+    
         path: "/book/:bookId",
         element: <BookDetails />
     }
