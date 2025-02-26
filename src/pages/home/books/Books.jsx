@@ -4,15 +4,12 @@ import React, { useState, useEffect, } from "react";
 import axios from "axios";
 import { Card, CardContent, Typography, CardMedia, Button } from "@mui/material";
 import styles from "./Books.module.css";
-import DashboardNavbar from "../../../components/dashboardNavbar/DashboardNavbar";
 import { jwtDecode } from "jwt-decode";
-import { useNavigate } from "react-router-dom"
 import { toast, ToastContainer } from "react-toastify";
+import BooksNavbar from "../../../components/booksNavbar/BooksNavbar";
+import { useNavigate, useLocation } from "react-router-dom";
 
-
-
-const API_URL = "http://api.fortunaelibrary-api.com/api";
-
+const API_URL = "http://fortunaeapi-dev.eba-7p6g3tc2.us-east-1.elasticbeanstalk.com/api/Books/getbooks";
 
 const BooksPage = () => {
     const [books, setBooks] = useState([]);
@@ -22,11 +19,6 @@ const BooksPage = () => {
     const [message, setMessage] = useState('');
     const navigate = useNavigate();
     
-
-    
-
-
-
     useEffect(() => {
         const fetchBooks = async () => {
             try {
@@ -37,12 +29,27 @@ const BooksPage = () => {
                 console.error("Error fetching books:", err);
             }
 
-            // Decode token only if it exists
             setLoading(false);
         };
+    const [error, setError] = useState("");
+    const navigate = useNavigate();
+    const location = useLocation();
 
+    const fetchBooks = async () => {
+        try {
+            const response = await axios.get(API_URL);
+            console.log("Fetched books:", response?.data);
+            setBooks(response.data);
+        } catch (err) {
+            setError("Failed to load books.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
         fetchBooks();
-    }, []); // Ensure `useEffect` runs when `token` changes
+    }, []); 
 
     if (loading){
         <p>Loading...</p>;
@@ -51,15 +58,9 @@ const BooksPage = () => {
       <p>{error}</p>;
     }
 
-    const token = localStorage.getItem("token"); // Get token from local storage (or state)
+    const token = localStorage.getItem("token"); 
    
-       //const token = localStorage.getItem('token');
-    //    const decodedToken = jwtDecode(token);
-    //    console.log(token);
-    //    //console.log(token.UserId);
-    //    console.log(decodedToken);
-    //   console.log(decodedToken.UserId);
-
+ 
     const handleBorrowBook = async (e, bookId) => { 
     e.preventDefault();
     console.log(bookId);
@@ -77,7 +78,7 @@ const BooksPage = () => {
 
         try {
             const decodedToken = jwtDecode(token);
-            userId = decodedToken?.UserId; // Extract userId directly
+            userId = decodedToken?.UserId; 
             console.log("UserId:", userId);
         } catch (decodeError) {
             console.error("Error decoding token:", decodeError);
@@ -93,11 +94,10 @@ const BooksPage = () => {
             },
         };
 
-        // Use query parameters instead of body
         const response = await axios.post(
             `${API_URL}/Borrowing?userId=${userId}&bookId=${bookId}`, 
-            null, // No request body needed
-            config // Headers
+            null, 
+            config 
         );
 
         setMessage("Book borrowed successfully!");
@@ -111,11 +111,11 @@ const BooksPage = () => {
     }
 };
   
-
+    }, [location]); 
 
     return (
         <div>
-            <DashboardNavbar />
+            <BooksNavbar />
             <div className={styles.booksPageContainer}>
                 <h2>All Books</h2>
                 <div className={styles.booksList}>
@@ -125,12 +125,16 @@ const BooksPage = () => {
                                 component="img"
                                 alt={book.title}
                                 height="200"
-                                image={book.image || "default_image_url"}
+                                image={book.bookImage || "default_image_url"}
                                 title={book.title}
+                                description={book.description}
+                                className={styles.bookImage}
                             />
                             <CardContent>
-                                <Typography variant="h6">{book.title}</Typography>
-                                <Typography variant="body2" color="textSecondary">
+                                <Typography className={styles.bookTitle} variant="h6">
+                                    {book.title}
+                                </Typography>
+                                <Typography className={styles.bookAuthor} variant="body2" color="textSecondary">
                                     {book.author}
                                 </Typography>
                                 <Typography variant="body2">{book.genre}</Typography>
@@ -161,6 +165,19 @@ const BooksPage = () => {
 
 
 
+                                <Typography className={styles.bookDescription}>
+                                    {book.description}
+                                </Typography>
+                                <div className={styles.submitButtonWrapper}>
+                                    <Button
+                                        type="submit"
+                                        variant="contained"
+                                        className={styles.submitButton}
+                                        onClick={() => navigate("/BorrowBook")}
+                                    >
+                                        Borrow Book
+                                    </Button>
+                                </div>
                             </CardContent>
                         </Card>
                     ))}

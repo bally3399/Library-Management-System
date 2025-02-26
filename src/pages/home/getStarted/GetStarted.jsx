@@ -60,9 +60,8 @@ const GetStarted = () => {
                 profileSummary: form.profileSummary,
             };
 
-            const base_url = process.env.REACT_APP_API_BASE_URL;
 
-            const response = await axios.post(`http://api.fortunaelibrary-api.com/api/Auth/register`, payload, {
+            const response = await axios.post(" http://fortunaeapi-dev.eba-7p6g3tc2.us-east-1.elasticbeanstalk.com/api/Auth/register", payload, {
                 headers: { "Content-Type": "application/json" },
             });
             console.log(response);

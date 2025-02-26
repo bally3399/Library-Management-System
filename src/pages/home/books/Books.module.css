@@ -16,13 +16,86 @@
     width: 100%;
     margin: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+
 }
 
-.bookCard img {
-    object-fit: cover;
-}
-
-button {
+.button {
     margin-top: 10px;
 }
 
+.submitButtonWrapper {
+    margin-top: 1rem;
+}
+
+.submitButton {
+    background-color: #a47a47 !important;
+    color: black !important;
+    padding: 0.75rem !important;
+    border-radius: 9999px !important;
+}
+
+.submitButton:hover {
+    background-color: darkgoldenrod !important;
+}
+
+
+
+.bookCard:hover {
+    transform: translateY(-5px);
+}
+
+.bookImage {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+.bookTitle {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.bookAuthor {
+    font-size: 14px;
+    color: #666;
+}
+
+.bookDescription {
+    font-size: 14px;
+    color: #444;
+    margin-top: 8px;
+}
+
+@media (max-width: 768px) {
+    .booksList {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .bookCard {
+        width: 90%;
+        max-width: 350px;
+        margin: 10px auto;
+    }
+
+    .bookImage {
+        height: auto;
+        max-height: 180px;
+    }
+
+    .bookTitle {
+        font-size: 16px;
+    }
+
+    .bookAuthor,
+    .bookDescription {
+        font-size: 12px;
+    }
+
+    .submitButton {
+        width: 100%;
+        text-align: center;
+    }
+}
