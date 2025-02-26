@@ -21,23 +21,8 @@ const BooksPage = () => {
     
     useEffect(() => {
         const fetchBooks = async () => {
-            try {
-                const response = await axios.get(`${API_URL}/Books/getbooks?pageNumber=1&pageSize=10`);
-                setBooks(response.data);
-            } catch (err) {
-                setError("Failed to load books.");
-                console.error("Error fetching books:", err);
-            }
-
-            setLoading(false);
-        };
-    const [error, setError] = useState("");
-    const navigate = useNavigate();
-    const location = useLocation();
-
-    const fetchBooks = async () => {
         try {
-            const response = await axios.get(API_URL);
+            const response = await axios.get(`${API_URL}/Books/getbooks?pageNumber=1&pageSize=10`);
             console.log("Fetched books:", response?.data);
             setBooks(response.data);
         } catch (err) {
@@ -47,20 +32,8 @@ const BooksPage = () => {
         }
     };
 
-    useEffect(() => {
-        fetchBooks();
-    }, []); 
-
-    if (loading){
-        <p>Loading...</p>;
-    }    
-    if (error){
-      <p>{error}</p>;
-    }
-
     const token = localStorage.getItem("token"); 
    
- 
     const handleBorrowBook = async (e, bookId) => { 
     e.preventDefault();
     console.log(bookId);
