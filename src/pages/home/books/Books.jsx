@@ -21,9 +21,9 @@ const BooksPage = () => {
     const [memberId, setMemberId] = useState('');
     const [message, setMessage] = useState('');
     const navigate = useNavigate();
-    
 
-    
+
+
 
 
 
@@ -124,8 +124,8 @@ const BooksPage = () => {
                             <CardMedia
                                 component="img"
                                 alt={book.title}
-                                height="200"
-                                image={book.image || "default_image_url"}
+                                height="50"
+                                image={book.image || "/jefffinleyunsplash.jpg"}
                                 title={book.title}
                             />
                             <CardContent>
@@ -134,6 +134,7 @@ const BooksPage = () => {
                                     {book.author}
                                 </Typography>
                                 <Typography variant="body2">{book.genre}</Typography>
+                                <div className="flex justify-between">
                                 <Button
                                     variant="contained"
                                     color="primary"
@@ -149,6 +150,8 @@ const BooksPage = () => {
                                 >
                                     Borrow Book
                                 </Button>
+                                </div>
+                                
 {/* 
                                 <Button
                                    onClick={(e) => handleBorrowBook(e, book.id)}
@@ -158,9 +161,6 @@ const BooksPage = () => {
                                 >
                                     Borrow Book
                                 </Button> */}
-
-
-
                             </CardContent>
                         </Card>
                     ))}
