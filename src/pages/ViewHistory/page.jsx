@@ -8,12 +8,12 @@ const ViewHistory = ({ memberId: propsMemberId }) => {
     const [error, setError] = useState(null);
     const [userId, setUserId] = useState(propsMemberId || null);
 
-    const base_url = 'https://api.fortunaelibrary-api.com';
+    const base_url = 'http://api.fortunaelibrary-api.com';
 
     useEffect(() => {
         // Get user ID from JWT if not provided as prop
         if (!propsMemberId) {
-            const token = localStorage.getItem('authToken');
+            const token = localStorage.getItem('token');
             console.log(token);
             if (token) {
                 try {
@@ -33,23 +33,26 @@ const ViewHistory = ({ memberId: propsMemberId }) => {
 
         const fetchHistory = async () => {
             // Get the authentication token
-            const token = localStorage.getItem('authToken');
+            const token = localStorage.getItem('token');
             
             if (!token) {
                 setError("Authentication token not found");
                 setLoading(false);
                 return;
             }
-
+        
             try {
-                const response = await axios.get(`${base_url}/api/Borrowing/history`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    },
-                    params: userId ? { userId } : {}
-                });
+                const response = await axios.post(`${base_url}/api/Borrowing/history`, 
+                    { userId }, // Send userId in request body
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json' // Ensure JSON format
+                        }
+                    }
+                );
                 
-                console.log(response.data);
+                console.log(response);
                 setHistory(response.data);
             } catch (err) {
                 console.error("API Error:", err);
@@ -58,14 +61,15 @@ const ViewHistory = ({ memberId: propsMemberId }) => {
                 setLoading(false);
             }
         };
-
+        
         if (userId || !propsMemberId) {
             fetchHistory();
         }
     }, [propsMemberId, userId, base_url]);
 
     if (loading) return <div className="text-center mt-4">Loading...</div>;
-    if (error) return <div className="text-center mt-4 text-red-500">Error: {error}</div>;
+    if (error.status === 204) return <div className="text-center text-4xl mt-4 text-gray-500">No Borrowed Books Found</div>;
+    if (error.status) return <div className="text-center mt-4 text-red-500">Error: {error}</div>;
 
     return (
         <div className="container mx-auto p-4">

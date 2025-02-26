@@ -23,7 +23,7 @@ const Login = () => {
 
         try {
             const response = await axios.post(
-                "https://api.fortunaelibrary-api.com/api/Auth/login",
+                "http://api.fortunaelibrary-api.com/api/Auth/login",
                 form,
                 {
                     headers: { "Content-Type": "application/json" },
