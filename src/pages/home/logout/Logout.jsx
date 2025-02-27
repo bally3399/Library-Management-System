@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +8,6 @@ const Logout = () => {
 
     const handleLogout = () => {
         localStorage.removeItem("token");
-        localStorage.removeItem("role");
         navigate("/");
     };
 

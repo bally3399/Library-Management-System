@@ -1,48 +1,47 @@
-"use strict";
-
-import React, { useState, useEffect, } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Card, CardContent, Typography, CardMedia, Button } from "@mui/material";
 import styles from "./Books.module.css";
-import DashboardNavbar from "../../../components/dashboardNavbar/DashboardNavbar";
-import { jwtDecode } from "jwt-decode";
-import { useNavigate } from "react-router-dom"
+import BooksNavbar from "../../../components/booksNavbar/BooksNavbar";
+import { useNavigate, useLocation } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
+import { jwtDecode } from "jwt-decode";
 
 
-
-const API_URL = "http://api.fortunaelibrary-api.com/api";
-
+const API_URL = "http://fortunaeapi-dev.eba-7p6g3tc2.us-east-1.elasticbeanstalk.com/api/Books/getbooks";
+const baseUrl = 'http://api.fortunaelibrary-api.com';
 
 const BooksPage = () => {
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(""); 
-    const [memberId, setMemberId] = useState('');
-    const [message, setMessage] = useState('');
+    const [error, setError] = useState("");
     const navigate = useNavigate();
+    const [message, setMessage] = useState("");
+    const [memberId, setMemberId] = useState(null);
+    
+    
 
 
+    const location = useLocation();
+ 
 
-
-
-
-    useEffect(() => {
-        const fetchBooks = async () => {
-            try {
-                const response = await axios.get(`${API_URL}/Books/getbooks?pageNumber=1&pageSize=10`);
-                setBooks(response.data);
-            } catch (err) {
-                setError("Failed to load books.");
-                console.error("Error fetching books:", err);
-            }
-
-            // Decode token only if it exists
+    const fetchBooks = async () => {
+        try {
+            const response = await axios.get(API_URL);
+            console.log("Fetched books:", response?.data);
+            setBooks(response.data);
+        } catch (err) {
+            setError("Failed to load books.");
+        } finally {
             setLoading(false);
-        };
-
+        }
+    };
+    
+    useEffect(() => {
         fetchBooks();
+        
     }, []); // Ensure `useEffect` runs when `token` changes
+
 
     if (loading){
         <p>Loading...</p>;
@@ -95,7 +94,7 @@ const BooksPage = () => {
 
         // Use query parameters instead of body
         const response = await axios.post(
-            `${API_URL}/Borrowing?userId=${userId}&bookId=${bookId}`, 
+            `${baseUrl}/api/Borrowing?userId=${userId}&bookId=${bookId}`, 
             null, // No request body needed
             config // Headers
         );
@@ -112,9 +111,12 @@ const BooksPage = () => {
 };
 
 
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>{error}</p>;
+
     return (
         <div>
-            <DashboardNavbar />
+            <BooksNavbar />
             <div className={styles.booksPageContainer}>
                 <h2>All Books</h2>
                 <div className={styles.booksList}>
@@ -123,13 +125,17 @@ const BooksPage = () => {
                             <CardMedia
                                 component="img"
                                 alt={book.title}
-                                height="50"
-                                image={book.image || "/jefffinleyunsplash.jpg"}
+                                height="200"
+                                image={book.bookImage || "default_image_url"}
                                 title={book.title}
+                                description={book.description}
+                                className={styles.bookImage}
                             />
                             <CardContent>
-                                <Typography variant="h6">{book.title}</Typography>
-                                <Typography variant="body2" color="textSecondary">
+                                <Typography className={styles.bookTitle} variant="h6">
+                                    {book.title}
+                                </Typography>
+                                <Typography className={styles.bookAuthor} variant="body2" color="textSecondary">
                                     {book.author}
                                 </Typography>
                                 <Typography variant="body2">{book.genre}</Typography>
