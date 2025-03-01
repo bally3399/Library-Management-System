@@ -142,7 +142,8 @@ const BooksPage = () => {
                                 <div className="flex justify-between">
                                 <Button
                                     variant="contained"
-                                    color="primary"
+                                    
+                                    className="btn btn-[#ab7933] text-white"
                                     href={`/books/${book.id}`}
                                 >
                                     View Details
@@ -150,7 +151,7 @@ const BooksPage = () => {
                                 <Button
                                    onClick={(e) => handleBorrowBook(e, book.id)}
                                     variant="contained"
-                                    color="secondary"
+                                    className="btn btn-[#ab7933] text-white"
                                     sx={{ marginLeft: "10px" }}
                                 >
                                     Borrow Book
