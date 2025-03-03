@@ -13,7 +13,7 @@ const BorrowedBooks = () => {
   const [error, setError] = useState(null);
   const [memberId, setMemberId] = useState(null);
   const [message, setMessage] = useState("");
-  const [ratingValue, setRatingValue] = useState(50);
+  const [ratingValue, setRatingValue] = useState(5);
   const [comment, setComment] = useState("I love the book");
 
 
@@ -141,17 +141,17 @@ const BorrowedBooks = () => {
           <p className="text-gray-600">You don't have any borrowed books at the moment.</p>
         </div>
       ) : (
-        <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <ul className="flex  gap-6">
           {borrowedBooks.map((book) => (
             <li
               key={book.id}
-              className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-100"
+              className="bg-white w-1/2 border border-red-600 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-100"
             >
-              <div className="relative h-48 overflow-hidden">
+              <div className="relative w-10 h-10 overflow-hidden">
                 <img
                   src="/jefffinleyunsplash.jpg"
                   alt={`Cover of ${book.bookTitle}`}
-                  className="w-full h-full object-cover"
+                  className="w-10 h-10 object-cover"
                 />
               </div>
               <div className="p-5">

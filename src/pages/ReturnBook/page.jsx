@@ -35,7 +35,7 @@ const ReturnBookPage = () => {
 
     const fetchBorrowedBooks = async () => {
         try {
-            const response = await axios.get(`${baseUrl}{{baseUrl}}/api/Borrowing/borrowedBooks?userId=${memberId}`); // Update with your API endpoint
+            const response = await axios.get(`${baseUrl}/api/Borrowing/borrowedBooks?userId=${memberId}`); // Update with your API endpoint
             setBorrowedBooks(response.data);
         } catch (err) {
             setError('Failed to fetch borrowed books');
