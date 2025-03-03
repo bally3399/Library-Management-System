@@ -61,7 +61,7 @@ const GetStarted = () => {
             };
 
 
-            const response = await axios.post(" http://fortunaeapi-dev.eba-7p6g3tc2.us-east-1.elasticbeanstalk.com/api/Auth/register", payload, {
+            const response = await axios.post(" http://api.fortunaelibrary.com/api/Auth/register", payload, {
                 headers: { "Content-Type": "application/json" },
             });
             console.log(response);

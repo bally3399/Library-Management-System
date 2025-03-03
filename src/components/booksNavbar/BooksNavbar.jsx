@@ -28,7 +28,7 @@ const DashboardNavbar = () => {
             });
 
             const response = await axios.get(
-                `http://fortunaeapi-dev.eba-7p6g3tc2.us-east-1.elasticbeanstalk.com/api/Books/search?${queryParams}`
+                `http://api.fortunaelibrary.com/api/Books/search?${queryParams}`
             );
             setSearchResults(response.data);
             setShowSuggestions(true);

@@ -8,7 +8,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
 
 
-const API_URL = "http://fortunaeapi-dev.eba-7p6g3tc2.us-east-1.elasticbeanstalk.com/api/Books/getbooks";
+const API_URL = "http://api.fortunaelibrary.com/api/Books/getbooks";
 const baseUrl = 'http://api.fortunaelibrary-api.com';
 
 const BooksPage = () => {
