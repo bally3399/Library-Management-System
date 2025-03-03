@@ -23,7 +23,7 @@ const Login = () => {
 
         try {
             const response = await axios.post(
-                " http://fortunaeapi-dev.eba-7p6g3tc2.us-east-1.elasticbeanstalk.com/api/Auth/login",
+                " http://api.fortunaelibrary.com/api/Auth/login",
                 form,
                 {
                     headers: { "Content-Type": "application/json" },

@@ -13,7 +13,7 @@ const BookDetails = () => {
         const fetchBook = async () => {
             try {
                 const response = await axios.get(
-                    `http://fortunaeapi-dev.eba-7p6g3tc2.us-east-1.elasticbeanstalk.com/api/Books/book/${bookId}`
+                    `http://api.fortunaelibrary.com/api/Books/book/${bookId}`
                 );
                 setBook(response.data);
                 setLoading(false);

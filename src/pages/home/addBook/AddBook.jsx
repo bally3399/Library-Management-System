@@ -5,7 +5,7 @@ import styles from "./AddBook.module.css";
 import {jwtDecode} from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 
-const API_URL = " http://fortunaeapi-dev.eba-7p6g3tc2.us-east-1.elasticbeanstalk.com";
+const API_URL = " http://api.fortunaelibrary.com";
 
     const AddBook = () => {
     const [bookData, setBookData] = useState({
