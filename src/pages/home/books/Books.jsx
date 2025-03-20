@@ -8,8 +8,8 @@ import { toast, ToastContainer } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
 
 
-const API_URL = "http://api.fortunaelibrary.com/api/Books/getbooks";
-const baseUrl = 'http://api.fortunaelibrary-api.com';
+const API_URL = "https://library-mangement-backend.onrender.com/api/Books/getbooks";
+const baseUrl = 'https://library-mangement-backend.onrender.com';
 
 const BooksPage = () => {
     const [books, setBooks] = useState([]);

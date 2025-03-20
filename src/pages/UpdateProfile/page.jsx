@@ -82,7 +82,7 @@ const UpdateProfile = () => {
         e.preventDefault();
         // Add logic to handle profile update
 
-        const base_url =  'http://api.fortunaelibrary-api.com';
+        const base_url =  'https://library-mangement-backend.onrender.com';
         console.log(dateOfBirth);
 
         try {

@@ -28,7 +28,7 @@ const DashboardNavbar = () => {
             });
 
             const response = await axios.get(
-                `http://api.fortunaelibrary.com/api/Books/search?${queryParams}`
+                `https://library-mangement-backend.onrender.com/api/Books/search?${queryParams}`
             );
             setSearchResults(response.data);
             setShowSuggestions(true);

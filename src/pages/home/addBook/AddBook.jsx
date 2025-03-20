@@ -5,7 +5,7 @@ import styles from "./AddBook.module.css";
 import {jwtDecode} from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 
-const API_URL = " http://api.fortunaelibrary.com";
+const API_URL = "https://library-mangement-backend.onrender.com";
 
     const AddBook = () => {
     const [bookData, setBookData] = useState({

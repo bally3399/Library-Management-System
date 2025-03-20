@@ -13,7 +13,7 @@ const BookDetails = () => {
         const fetchBook = async () => {
             try {
                 const response = await axios.get(
-                    `http://api.fortunaelibrary.com/api/Books/book/${bookId}`
+                    `https://library-mangement-backend.onrender.com/api/Books/book/${bookId}`
                 );
                 setBook(response.data);
                 setLoading(false);

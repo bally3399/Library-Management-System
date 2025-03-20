@@ -8,7 +8,7 @@ const ViewHistory = ({ memberId: propsMemberId }) => {
     const [error, setError] = useState(null);
     const [userId, setUserId] = useState(propsMemberId || null);
 
-    const base_url = 'http://api.fortunaelibrary-api.com';
+    const base_url = 'https://library-mangement-backend.onrender.com';
 
     useEffect(() => {
         // Get user ID from JWT if not provided as prop
