@@ -3,178 +3,175 @@ import axios from "axios";
 import { Card, CardContent, Typography, CardMedia, Button } from "@mui/material";
 import styles from "./Books.module.css";
 import BooksNavbar from "../../../components/booksNavbar/BooksNavbar";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
 
-
-const API_URL = "http://fortunaeapi-dev.eba-7p6g3tc2.us-east-1.elasticbeanstalk.com/api/Books/getbooks";
-const baseUrl = 'http://api.fortunaelibrary-api.com';
+const API_URL = "https://library-mangement-backend.onrender.com/api/Books/getbooks";
+const baseUrl = "https://library-mangement-backend.onrender.com";
 
 const BooksPage = () => {
-    const [books, setBooks] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
-    const navigate = useNavigate();
-    const [message, setMessage] = useState("");
-    const [memberId, setMemberId] = useState(null);
-    
-    
+  const [books, setBooks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
+  // Default fallback books data
+  const defaultBooks = [
+    {
+      id: "1",
+      title: "The Great Gatsby",
+      author: "F. Scott Fitzgerald",
+      genre: "Fiction",
+      bookImage: "/milestonehardcover.webp", // Placeholder image
+      description: "A story of the fabulously wealthy Jay Gatsby and his love for the beautiful Daisy Buchanan.",
+    },
+    {
+      id: "2",
+      title: "To Kill a Mockingbird",
+      author: "Harper Lee",
+      genre: "Fiction",
+      bookImage: "/StudyBooks.webp",
+      description: "A tale of racial injustice and the loss of innocence in a small Southern town.",
+    },
+    {
+      id: "3",
+      title: "1984",
+      author: "George Orwell",
+      genre: "Dystopian",
+      bookImage: "/YourOwnbook.webp",
+      description: "A chilling depiction of a totalitarian future where freedom is suppressed.",
+    },
+  ];
 
-    const location = useLocation();
- 
-
-    const fetchBooks = async () => {
-        try {
-            const response = await axios.get(API_URL);
-            console.log("Fetched books:", response?.data);
-            setBooks(response.data);
-        } catch (err) {
-            setError("Failed to load books.");
-        } finally {
-            setLoading(false);
-        }
-    };
-    
-    useEffect(() => {
-        fetchBooks();
-        
-    }, []); // Ensure `useEffect` runs when `token` changes
-
-
-    if (loading){
-        <p>Loading...</p>;
-    }    
-    if (error){
-      <p>{error}</p>;
+  const fetchBooks = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(API_URL);
+      console.log("Fetched books:", response?.data);
+      setBooks(response.data.length > 0 ? response.data : defaultBooks); // Use API data or fallback
+    } catch (err) {
+      console.error("Failed to load books:", err);
+      setBooks(defaultBooks); // Fallback to default books on error
+      setError("Using default book list due to server issue."); // Optional subtle notice
+    } finally {
+      setLoading(false);
     }
+  };
 
-    const token = localStorage.getItem("token"); // Get token from local storage (or state)
-   
-       //const token = localStorage.getItem('token');
-    //    const decodedToken = jwtDecode(token);
-    //    console.log(token);
-    //    //console.log(token.UserId);
-    //    console.log(decodedToken);
-    //   console.log(decodedToken.UserId);
+  useEffect(() => {
+    fetchBooks();
 
-    const handleBorrowBook = async (e, bookId) => { 
+    // Decode token if needed (currently not used, but kept for completeness)
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        console.log("Decoded token:", decoded);
+      } catch (decodeError) {
+        console.error("Error decoding token:", decodeError);
+        setMessage("Session expired. Please log in again.");
+      }
+    }
+  }, []);
+
+  const handleBorrowBook = async (e, bookId) => {
     e.preventDefault();
-    console.log(bookId);
     setLoading(true);
 
+    const token = localStorage.getItem("token");
     if (!token) {
-        console.error("No authentication token found.");
-        setMessage("User not authenticated.");
-        setLoading(false);
-        return;
+      console.error("No authentication token found.");
+      setMessage("User not authenticated.");
+      toast.error("Please log in to borrow a book.");
+      setLoading(false);
+      return;
     }
 
     try {
-        let userId = null;
+      const decodedToken = jwtDecode(token);
+      const userId = decodedToken?.UserId;
+      if (!userId) throw new Error("User ID not found in token");
 
-        try {
-            const decodedToken = jwtDecode(token);
-            userId = decodedToken?.UserId; // Extract userId directly
-            console.log("UserId:", userId);
-        } catch (decodeError) {
-            console.error("Error decoding token:", decodeError);
-            setMessage("Invalid token.");
-            setLoading(false);
-            return;
-        }
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      };
 
-        const config = {
-            headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-            },
-        };
+      const response = await axios.post(
+        `${baseUrl}/api/Borrowing?userId=${userId}&bookId=${bookId}`,
+        null,
+        config
+      );
 
-        // Use query parameters instead of body
-        const response = await axios.post(
-            `${baseUrl}/api/Borrowing?userId=${userId}&bookId=${bookId}`, 
-            null, // No request body needed
-            config // Headers
-        );
-
-        setMessage("Book borrowed successfully!");
-        console.log("Borrow response:", response.data);
-        toast.success("Book borrowed successfully!");
+      setMessage("Book borrowed successfully!");
+      console.log("Borrow response:", response.data);
+      toast.success("Book borrowed successfully!");
     } catch (error) {
-        setMessage("Failed to borrow book.");
-        console.error("Borrowing error:", error.response?.data || error.message);
+      setMessage("Failed to borrow book.");
+      console.error("Borrowing error:", error.response?.data || error.message);
+      toast.error("Failed to borrow book.");
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
-};
+  };
 
+  if (loading) return <p>Loading...</p>;
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>{error}</p>;
-
-    return (
-        <div>
-            <BooksNavbar />
-            <div className={styles.booksPageContainer}>
-                <h2>All Books</h2>
-                <div className={styles.booksList}>
-                    {books.map((book) => (
-                        <Card key={book.id} className={styles.bookCard}>
-                            <CardMedia
-                                component="img"
-                                alt={book.title}
-                                height="200"
-                                image={book.bookImage || "default_image_url"}
-                                title={book.title}
-                                description={book.description}
-                                className={styles.bookImage}
-                            />
-                            <CardContent>
-                                <Typography className={styles.bookTitle} variant="h6">
-                                    {book.title}
-                                </Typography>
-                                <Typography className={styles.bookAuthor} variant="body2" color="textSecondary">
-                                    {book.author}
-                                </Typography>
-                                <Typography variant="body2">{book.genre}</Typography>
-                                <div className="flex justify-between">
-                                <Button
-                                    variant="contained"
-                                    
-                                    className="btn btn-[#ab7933] text-white"
-                                    href={`/books/${book.id}`}
-                                >
-                                    View Details
-                                </Button>
-                                <Button
-                                   onClick={(e) => handleBorrowBook(e, book.id)}
-                                    variant="contained"
-                                    className="btn btn-[#ab7933] text-white"
-                                    sx={{ marginLeft: "10px" }}
-                                >
-                                    Borrow Book
-                                </Button>
-                                </div>
-                                
-{/* 
-                                <Button
-                                   onClick={(e) => handleBorrowBook(e, book.id)}
-                                    variant="contained"
-                                    color="secondary"
-                                    sx={{ marginLeft: "10px" }}
-                                >
-                                    Borrow Book
-                                </Button> */}
-                            </CardContent>
-                        </Card>
-                    ))}
+  return (
+    <div>
+      <BooksNavbar />
+      <div className={styles.booksPageContainer}>
+        <h2>All Books</h2>
+        <div className={styles.booksList}>
+          {books.map((book) => (
+            <Card key={book.id} className={styles.bookCard}>
+              <CardMedia
+                component="img"
+                alt={book.title}
+                height="200"
+                image={book.bookImage || "https://via.placeholder.com/150"}
+                title={book.title}
+                className={styles.bookImage}
+              />
+              <CardContent>
+                <Typography className={styles.bookTitle} variant="h6">
+                  {book.title}
+                </Typography>
+                <Typography className={styles.bookAuthor} variant="body2" color="textSecondary">
+                  {book.author}
+                </Typography>
+                <Typography variant="body2">{book.genre}</Typography>
+                <div className="flex justify-between mt-2">
+                  <Button
+                    style={{ background: "#ab7933", margin: "5px", color: "white",  }}
+                    className="btn bg-[#ab7933] text-white m-5"
+                    onClick={() => navigate(`/books/${book.id}`)}
+                  >
+                    View Details
+                  </Button>
+                  <Button
+                    style={{ background: "#ab9300", margin: "5px", color: "white",  }}
+                    className="btn bg-[#ab7933] text-white"
+                    onClick={(e) => handleBorrowBook(e, book.id)}
+                    disabled={loading}
+                  >
+                    {loading ? "Processing..." : "Borrow Book"}
+                  </Button>
                 </div>
-            </div>
-            <ToastContainer />
+              </CardContent>
+            </Card>
+          ))}
         </div>
-    );
+        {message && <p className="mt-4 text-red-600">{message}</p>}
+        {error && <p className="mt-4 text-gray-500">{error}</p>} {/* Optional: Show fallback notice */}
+      </div>
+      <ToastContainer />
+    </div>
+  );
 };
 
 export default BooksPage;

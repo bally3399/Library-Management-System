@@ -1,174 +1,154 @@
-import React, { useState, useEffect } from 'react';
-import {jwtDecode} from 'jwt-decode';
+"use client";
 
+import React, { useState, useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const UpdateProfile = () => {
-    const [formData, setFormData] = useState({
-        name: '',
-        dateOfBirth: '',
-        profileSummary: '',
-    });
+  const [formData, setFormData] = useState({
+    name: "",
+    dateOfBirth: "",
+    profileSummary: "",
+  });
+  const [memberId, setMemberId] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-    const [memberId, setMemberId] = useState(null);
+  const token = localStorage.getItem("token");
 
-    const token = localStorage.getItem('token');
-    const decodedToken = jwtDecode(token);
-    console.log(token);
-    console.log(token.UserId);
-    console.log(decodedToken);
-   console.log(decodedToken.UserId);
-    useEffect(() => {
-        // Add logic to fetch member details
-       const token = localStorage.getItem('token');
-       if (token) {
-        try {
-            // Decode the JWT to get user info including email
-            const decodedToken = jwtDecode(token);
-
-            // Assuming your JWT contains userId/memberId claim
-            setMemberId(decodedToken.UserId)
-        
-          // Optionally pre-fill email if it's in the token
-          if (decodedToken.email) {
-            setFormData(prev =>({
-              ...prev,
-              email: decodedToken.email
-            }));
-          }
-        }catch (error) {
-            console.error('Error decoding token:', error);
-       }
+  useEffect(() => {
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token);
+        setMemberId(decodedToken.UserId);
+        // Optionally pre-fill form data if available in token or from an API call
+        if (decodedToken.name || decodedToken.email) {
+          setFormData((prev) => ({
+            ...prev,
+            name: decodedToken.name || "",
+            // Add other fields if available in token
+          }));
+        }
+      } catch (error) {
+        console.error("Error decoding token:", error);
+        toast.error("Invalid token detected.");
       }
-    }, []);
+    }
+  }, [token]);
 
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-        
-        if (name === "dateOfBirth") {
-            const date = new Date(value);
-            const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-            
-            setFormData({
-                ...formData,
-                [dateOfBirth]: formattedDate
-            });
-        } else {
-            setFormData({
-                ...formData,
-                [name]: value
-            });
-        }
-    };
-    
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    if (name === "dateOfBirth") {
+      const date = new Date(value);
+      const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+      setFormData((prev) => ({
+        ...prev,
+        [name]: formattedDate,
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
+  };
 
-    // const handleChange = (e) => {
-    //     const { name, value } = e.target;
-    //     setFormData({
-    //         ...formData,
-    //         [name]: value,
-           
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
 
-    //     });
-    // };
+    const base_url = "https://library-mangement-backend.onrender.com";
 
-   // const getmemberIdbyEmail = token.jwtVerify(email);
-  //  const memberId = getmemberIdbyEmail;
+    try {
+      const response = await fetch(`${base_url}/api/Auth/update-profile?userId=${memberId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(formData),
+      });
 
-    const [name, setName] = useState(formData.name);
-    const [dateOfBirth, setDateOfBirth] = useState('2000-02-13');
-    const [profileSummary, setProfileSummary] = useState(formData.profileSummary);
+      if (response.ok) {
+        toast.success("Profile updated successfully!");
+        // Optionally reset form fields if desired
+        // setFormData({ name: "", dateOfBirth: "", profileSummary: "" });
+      } else {
+        const errorData = await response.json();
+        toast.warn(`Profile update might have encountered an issue: ${errorData.message}. It will be resolved soon.`);
+      }
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      toast.info("We're having trouble updating your profile right now. Don't worry, we'll resolve it shortly!");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        // Add logic to handle profile update
-
-        const base_url =  'http://api.fortunaelibrary-api.com';
-        console.log(dateOfBirth);
-
-        try {
-            const response = await fetch(`${base_url}/api/Auth/update-profile?userId=${decodedToken.UserId}`, {
-                method: "PUT",  // or "PUT" depending on API implementation
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    name: name,
-                    dateOfBirth: dateOfBirth,
-                    profileSummary: profileSummary
-                }),
-            });
-    
-            if (response.ok) {
-                alert('Book returned successfully');
-                // Reset form fields
-//                setBookId('');
-  ///              setMemberId('');
-     //           setComments('');
-            } else {
-                const errorData = await response.json();
-                alert(`Failed to update Profile: ${errorData.message}`);
-            }
-        } catch (error) {
-            console.error("Error updating Profile:", error);
-            alert("An error occurred while updating the profile.");
-        }
-
-        console.log('Profile updated:', formData);
-        <p className='text-green-500 text-5xl text-center items-center absolute top-10 left-90'>Profile Updated Successfully</p>
-
-    };
-
-    return (
-        <div className="update-profile max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold mb-6 text-center">Update Profile</h2>
-            <form onSubmit={handleSubmit}>
-                <div className="mb-4">
-                    <label htmlFor="name" className="block text-gray-700">Name:</label>
-                    <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        required
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                    />
-                </div>
-               
-                <div className="mb-4">
-    <label htmlFor="dateOfBirth" className="block text-gray-700">Date Of Birth:</label>
-    <input
-        type="date"
-        id="dateOfBirth"
-        name="dateOfBirth"
-        value={dateOfBirth}
-        onChange={handleChange}
-        required
-        className="w-full px-3 py-2 border border-gray-300 rounded-md"
-    />
-</div>
-
-
-                <div className="mb-4">
-                    <label htmlFor="profileSummary" className="block text-gray-700">profileSummary:</label>
-                    <textarea type="text"
-                        id="profileSummary"
-                        name="profileSummary"
-                        value={formData.profileSummary}
-                        onChange={handleChange}
-                        required
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                    >
-                    </textarea>
-
-                </div>
-
-
-
-                <button style={{ background: "#a47a47"}} type="submit" className="w-full bg-yellow-950 text-white py-2 rounded-md hover:bg-yellow-600">Update Profile</button>
-            </form>
+  return (
+    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+      <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Update Profile</h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label htmlFor="name" className="block text-gray-700 font-medium mb-1">
+            Name:
+          </label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#a47a47]"
+            disabled={loading}
+          />
         </div>
-    );
+
+        <div>
+          <label htmlFor="dateOfBirth" className="block text-gray-700 font-medium mb-1">
+            Date of Birth:
+          </label>
+          <input
+            type="date"
+            id="dateOfBirth"
+            name="dateOfBirth"
+            value={formData.dateOfBirth}
+            onChange={handleChange}
+            required
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#a47a47]"
+            disabled={loading}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="profileSummary" className="block text-gray-700 font-medium mb-1">
+            Profile Summary:
+          </label>
+          <textarea
+            id="profileSummary"
+            name="profileSummary"
+            value={formData.profileSummary}
+            onChange={handleChange}
+            required
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#a47a47] resize-y"
+            rows={4}
+            disabled={loading}
+          />
+        </div>
+
+        <button
+          type="submit"
+          style={{ background: "#a47a47" }}
+          className={`w-full text-white py-2 rounded-md hover:bg-[#8c6227] transition-colors duration-200 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+          disabled={loading}
+        >
+          {loading ? "Updating..." : "Update Profile"}
+        </button>
+      </form>
+      <ToastContainer />
+    </div>
+  );
 };
 
 export default UpdateProfile;
