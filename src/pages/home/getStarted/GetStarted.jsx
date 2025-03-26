@@ -205,7 +205,7 @@ const GetStarted = () => {
                     />
                     {errors.agree && <p className={styles.errorText}>{errors.agree}</p>}
 
-                    <Button type="submit" variant="contained" fullWidth disabled={isLoading}
+                    <Button type="submit" variant="contained" fullWidth 
                             className={styles.submitButton}>
                         {isLoading ? "Signing Up..." : "Sign Up"}
                     </Button>
