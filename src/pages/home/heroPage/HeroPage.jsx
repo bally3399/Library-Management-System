@@ -38,7 +38,7 @@ const books = [
     {
         title: "The Hobbit",
         author: "J.R.R. Tolkien",
-        description: "A classic fantasy adventure following Bilbo Baggins' journey.",
+        description: "f",
         image: "https://m.media-amazon.com/images/I/41aQPTCmeVL.jpg",
         rating: 5,
     },
