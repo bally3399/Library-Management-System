@@ -61,7 +61,7 @@ const GetStarted = () => {
             };
 
 
-            const response = await axios.post(" http://fortunaeapi-dev.eba-7p6g3tc2.us-east-1.elasticbeanstalk.com/api/Auth/register", payload, {
+            const response = await axios.post("https://library-mangement-backend.onrender.com/api/Auth/register", payload, {
                 headers: { "Content-Type": "application/json" },
             });
             console.log(response);
@@ -205,7 +205,7 @@ const GetStarted = () => {
                     />
                     {errors.agree && <p className={styles.errorText}>{errors.agree}</p>}
 
-                    <Button type="submit" variant="contained" fullWidth disabled={isLoading}
+                    <Button type="submit" variant="contained" fullWidth 
                             className={styles.submitButton}>
                         {isLoading ? "Signing Up..." : "Sign Up"}
                     </Button>
