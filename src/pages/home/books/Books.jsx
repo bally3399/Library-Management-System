@@ -17,7 +17,6 @@ const BooksPage = () => {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
-  // Default fallback books data
   const defaultBooks = [
     {
       id: "1",
@@ -50,11 +49,11 @@ const BooksPage = () => {
     try {
       const response = await axios.get(API_URL);
       console.log("Fetched books:", response?.data);
-      setBooks(response.data.length > 0 ? response.data : defaultBooks); // Use API data or fallback
+      setBooks(response.data.length > 0 ? response.data : defaultBooks);
     } catch (err) {
       console.error("Failed to load books:", err);
-      setBooks(defaultBooks); // Fallback to default books on error
-      setError("Using default book list due to server issue."); // Optional subtle notice
+      setBooks(defaultBooks);
+      setError("Using default book list due to server issue.");
     } finally {
       setLoading(false);
     }
@@ -63,7 +62,6 @@ const BooksPage = () => {
   useEffect(() => {
     fetchBooks();
 
-    // Decode token if needed (currently not used, but kept for completeness)
     const token = localStorage.getItem("token");
     if (token) {
       try {
@@ -145,29 +143,20 @@ const BooksPage = () => {
                   {book.author}
                 </Typography>
                 <Typography variant="body2">{book.genre}</Typography>
-                <div className="flex justify-between mt-2">
                   <Button
-                    style={{ background: "#ab7933", margin: "5px", color: "white",  }}
-                    className="btn bg-[#ab7933] text-white m-5"
-                    onClick={() => navigate(`/books/${book.id}`)}
-                  >
-                    View Details
-                  </Button>
-                  <Button
-                    style={{ background: "#ab9300", margin: "5px", color: "white",  }}
+                    style={{ background: "#a47a47", margin: "5px", color: "white",  }}
                     className="btn bg-[#ab7933] text-white"
                     onClick={(e) => handleBorrowBook(e, book.id)}
                     disabled={loading}
                   >
                     {loading ? "Processing..." : "Borrow Book"}
                   </Button>
-                </div>
               </CardContent>
             </Card>
           ))}
         </div>
         {message && <p className="mt-4 text-red-600">{message}</p>}
-        {error && <p className="mt-4 text-gray-500">{error}</p>} {/* Optional: Show fallback notice */}
+        {error && <p className="mt-4 text-gray-500">{error}</p>}
       </div>
       <ToastContainer />
     </div>

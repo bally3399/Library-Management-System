@@ -44,6 +44,7 @@ const API_URL = "https://library-mangement-backend.onrender.com";
             setMessage("");
 
             const token = localStorage.getItem("token");
+            console.log(token)
             if (!token) {
                 setMessage("Unauthorized: No token found.");
                 return;
@@ -51,7 +52,8 @@ const API_URL = "https://library-mangement-backend.onrender.com";
 
             try {
                 const decodedToken = jwtDecode(token);
-                if (decodedToken.role !== "Admin") {
+                console.log(decodedToken)
+                if (decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] !== "Admin") {
                     setMessage("Unauthorized: Only admins can add books.");
                     return;
                 }

@@ -37,6 +37,7 @@ const Login = () => {
                     autoClose: 3000,
                 });
                 localStorage.setItem("token", response.data.token);
+                console.log(response)
                 navigate("/dashboard");
             } else {
                 setErrors({ username: "Invalid username or password" });
