@@ -12,6 +12,7 @@ import BorrowBookPage from "../pages/home/borrowBook/BorrowBook";
 import BorrowedBooks from "../pages/BorrowedBooks/page";
 import BookDetails from "../pages/home/booksDetails/BookDetails";
 import ContactPage from "../pages/home/contact/contactPage";
+import About from "../pages/home/about/About";
 
 
 export const ROUTE =[
@@ -86,6 +87,11 @@ export const ROUTE =[
     {
         path: "/contact",
         element: <ContactPage />
+    },
+    {
+        path: "/about",
+        element: <About />
     }
+
 
 ]

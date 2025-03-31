@@ -15,9 +15,15 @@ const Navbar = () => {
             </div>
 
             <div className={`${styles.navLinks} ${isOpen ? styles.showMenu : ""}`}>
-                <div>Home</div>
-                <div>About</div>
-                <div>Contact</div>
+                <a href={"/"}>
+                    <div>Home</div>
+                </a>
+                <a href={"/about"}>
+                    <div>About</div>
+                </a>
+                <a href={"/contact"}>
+                    <div>Contact</div>
+                </a>
             </div>
 
             <Link to="/register" className={styles.desktopOnly}>

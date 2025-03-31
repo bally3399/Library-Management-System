@@ -36,10 +36,9 @@ const ContactPage = () => {
       });
       setResponseMessage("Message sent successfully! We'll get back to you soon.");
       toast.success("Message sent successfully!");
-      setFormData({ name: "", email: "", subject: "", message: "" }); // Reset form
+      setFormData({ name: "", email: "", subject: "", message: "" });
     } catch (err) {
       console.error("Failed to send message:", err);
-      // Fallback: Show success message even if API fails to maintain UX
       setResponseMessage("Message submission recorded. We'll address it soon.");
       toast.info("Message recorded locally. We'll try to process it.");
     } finally {
@@ -70,8 +69,15 @@ const ContactPage = () => {
                 required
                 fullWidth
                 variant="outlined"
-                InputLabelProps={{ style: { color: "#ab7933" } }}
-                sx={{ "& .MuiOutlinedInput-root": { "& fieldset": { borderColor: "#ab7933" } } }}
+                sx={{
+                  "& label.Mui-focused": { color: "#ab7933" },
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": { borderColor: "black" },
+                    "&:hover fieldset": { borderColor: "#ab7933" },
+                    "&.Mui-focused fieldset": { borderColor: "#ab7933" },
+                  },
+                  marginBottom: "16px",
+                }}
               />
               <TextField
                 label="Your Email"
@@ -82,8 +88,15 @@ const ContactPage = () => {
                 required
                 fullWidth
                 variant="outlined"
-                InputLabelProps={{ style: { color: "#ab7933" } }}
-                sx={{ "& .MuiOutlinedInput-root": { "& fieldset": { borderColor: "#ab7933" } } }}
+                sx={{
+                  "& label.Mui-focused": { color: "#ab7933" },
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": { borderColor: "black" },
+                    "&:hover fieldset": { borderColor: "#ab7933" },
+                    "&.Mui-focused fieldset": { borderColor: "#ab7933" },
+                  },
+                  marginBottom: "16px",
+                }}
               />
               <TextField
                 label="Subject"
@@ -93,8 +106,15 @@ const ContactPage = () => {
                 required
                 fullWidth
                 variant="outlined"
-                InputLabelProps={{ style: { color: "#ab7933" } }}
-                sx={{ "& .MuiOutlinedInput-root": { "& fieldset": { borderColor: "#ab7933" } } }}
+                sx={{
+                  "& label.Mui-focused": { color: "#ab7933" },
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": { borderColor: "black" },
+                    "&:hover fieldset": { borderColor: "#ab7933" },
+                    "&.Mui-focused fieldset": { borderColor: "#ab7933" },
+                  },
+                  marginBottom: "16px",
+                }}
               />
               <TextField
                 label="Message"
@@ -106,8 +126,15 @@ const ContactPage = () => {
                 multiline
                 rows={4}
                 variant="outlined"
-                InputLabelProps={{ style: { color: "#ab7933" } }}
-                sx={{ "& .MuiOutlinedInput-root": { "& fieldset": { borderColor: "#ab7933" } } }}
+                sx={{
+                  "& label.Mui-focused": { color: "#ab7933" },
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": { borderColor: "black" },
+                    "&:hover fieldset": { borderColor: "#ab7933" },
+                    "&.Mui-focused fieldset": { borderColor: "#ab7933" },
+                  },
+                  marginBottom: "16px",
+                }}
               />
               <Button
                 type="submit"

@@ -7,8 +7,10 @@ import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
 
-const API_URL = "https://library-mangement-backend.onrender.com/api/Books/getbooks";
-const baseUrl = "https://library-mangement-backend.onrender.com";
+
+
+const API_URL = "https://library-mangement-backend.onrender.com/api/Books/admin";
+const baseUrl = "https://library-mangement-backend.onrender.com/api/Books/admin";
 
 const BooksPage = () => {
   const [books, setBooks] = useState([]);
@@ -17,7 +19,6 @@ const BooksPage = () => {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
-  // Default fallback books data
   const defaultBooks = [
     {
       id: "1",
@@ -47,14 +48,43 @@ const BooksPage = () => {
 
   const fetchBooks = async () => {
     setLoading(true);
+
+    const token = localStorage.getItem("token");
+                console.log(token)
+                if (!token) {
+                    setMessage("Unauthorized: No token found.");
+                    return;
+                }
+    
+                try {
+                    const decodedToken = jwtDecode(token);
+                    console.log(decodedToken)
+                    if (decodedToken["role"] !== "admin") {
+                        toast.warning("Unauthorized: Only admins can view books.");
+                        return;
+                    }
+                } catch (error) {
+                    setMessage("Invalid token.");
+                    return;
+                }
+
+
     try {
-      const response = await axios.get(API_URL);
-      console.log("Fetched books:", response?.data);
-      setBooks(response.data.length > 0 ? response.data : defaultBooks); // Use API data or fallback
+      const response = await axios.get(API_URL, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+      console.log("Response:", response);
+      console.log("Fetched books:", response?.data?.data);
+      console.log("Status:", response.status);
+      console.log("message:", response.message);
+
+      setBooks(response.status === 200 ? response.data.data : defaultBooks);
     } catch (err) {
       console.error("Failed to load books:", err);
-      setBooks(defaultBooks); // Fallback to default books on error
-      setError("Using default book list due to server issue."); // Optional subtle notice
+      setBooks(defaultBooks);
+      setError("Using default book list due to server issue.");
     } finally {
       setLoading(false);
     }
@@ -63,17 +93,16 @@ const BooksPage = () => {
   useEffect(() => {
     fetchBooks();
 
-    // Decode token if needed (currently not used, but kept for completeness)
-    const token = localStorage.getItem("token");
-    if (token) {
-      try {
-        const decoded = jwtDecode(token);
-        console.log("Decoded token:", decoded);
-      } catch (decodeError) {
-        console.error("Error decoding token:", decodeError);
-        setMessage("Session expired. Please log in again.");
-      }
-    }
+    // const token = localStorage.getItem("token");
+    // if (token) {
+    //   try {
+    //     const decoded = jwtDecode(token);
+    //     console.log("Decoded token:", decoded);
+    //   } catch (decodeError) {
+    //     console.error("Error decoding token:", decodeError);
+    //     toast.error("Session expired. Please log in again.");
+    //   }
+    // }
   }, []);
 
   const handleBorrowBook = async (e, bookId) => {
@@ -133,7 +162,7 @@ const BooksPage = () => {
                 component="img"
                 alt={book.title}
                 height="200"
-                image={book.bookImage || "https://via.placeholder.com/150"}
+                image={book.bookImage !== null ? book.bookImage :  "https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200&q=80"}
                 title={book.title}
                 className={styles.bookImage}
               />
@@ -145,29 +174,20 @@ const BooksPage = () => {
                   {book.author}
                 </Typography>
                 <Typography variant="body2">{book.genre}</Typography>
-                <div className="flex justify-between mt-2">
                   <Button
-                    style={{ background: "#ab7933", margin: "5px", color: "white",  }}
-                    className="btn bg-[#ab7933] text-white m-5"
-                    onClick={() => navigate(`/books/${book.id}`)}
-                  >
-                    View Details
-                  </Button>
-                  <Button
-                    style={{ background: "#ab9300", margin: "5px", color: "white",  }}
+                    style={{ background: "#a47a47", margin: "5px", color: "white",  }}
                     className="btn bg-[#ab7933] text-white"
                     onClick={(e) => handleBorrowBook(e, book.id)}
                     disabled={loading}
                   >
                     {loading ? "Processing..." : "Borrow Book"}
                   </Button>
-                </div>
               </CardContent>
             </Card>
           ))}
         </div>
         {message && <p className="mt-4 text-red-600">{message}</p>}
-        {error && <p className="mt-4 text-gray-500">{error}</p>} {/* Optional: Show fallback notice */}
+        {error && <p className="mt-4 text-gray-500">{error}</p>}
       </div>
       <ToastContainer />
     </div>
