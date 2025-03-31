@@ -4,6 +4,8 @@ import { TextField, Button } from "@mui/material";
 import styles from "./AddBook.module.css";
 import {jwtDecode} from "jwt-decode";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify"
+
 
 const API_URL = "https://library-mangement-backend.onrender.com";
 
@@ -44,6 +46,7 @@ const API_URL = "https://library-mangement-backend.onrender.com";
             setMessage("");
 
             const token = localStorage.getItem("token");
+            console.log(token)
             if (!token) {
                 setMessage("Unauthorized: No token found.");
                 return;
@@ -51,12 +54,8 @@ const API_URL = "https://library-mangement-backend.onrender.com";
 
             try {
                 const decodedToken = jwtDecode(token);
-                console.log(decodedToken);
-                // console.log(decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"].toUpperCase());
-                console.log(decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"].capitalize());
-                // console.log(decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"].toLowerCase());
-
-                if (decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"].toUpperCase() !== "ADMIN") {
+                console.log(decodedToken)
+                if (decodedToken["role"] !== "admin") {
                     setMessage("Unauthorized: Only admins can add books.");
                     return;
                 }
@@ -85,8 +84,14 @@ const API_URL = "https://library-mangement-backend.onrender.com";
                         },
                     }
                 );
-                console.log("Book added:", response.data);
-                setMessage("Book added successfully!");
+                console.log(response.status);
+                console.log(response.message);
+                console.log(response.data);
+                if(response.status === 201){
+                    console.log("Book added:", response.data);
+                    toast.success("Book added successfully!");
+                   }
+                
 
                 setBookData({
                     title: "",
@@ -97,7 +102,7 @@ const API_URL = "https://library-mangement-backend.onrender.com";
                     image: null,
                 });
 
-                navigate("/books");
+                // navigate("/books");
             } catch (error) {
                 setMessage("Failed to add book. Try again.");
             }
@@ -179,6 +184,7 @@ const API_URL = "https://library-mangement-backend.onrender.com";
                     </Button>
                 </div>
             </form>
+            <ToastContainer />
         </div>
     );
 };
