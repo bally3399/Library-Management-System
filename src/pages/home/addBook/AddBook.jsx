@@ -51,7 +51,12 @@ const API_URL = "https://library-mangement-backend.onrender.com";
 
             try {
                 const decodedToken = jwtDecode(token);
-                if (decodedToken.role !== "Admin") {
+                console.log(decodedToken);
+                // console.log(decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"].toUpperCase());
+                console.log(decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"].capitalize());
+                // console.log(decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"].toLowerCase());
+
+                if (decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"].toUpperCase() !== "ADMIN") {
                     setMessage("Unauthorized: Only admins can add books.");
                     return;
                 }
